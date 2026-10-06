@@ -172,10 +172,11 @@
 <style>
   .build {
     position: absolute;
-    right: 14px;
-    bottom: 8px;
-    font-size: 12px;
-    opacity: 0.4;
+    left: 16px;
+    bottom: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    opacity: 0.75;
     color: #fff;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
     pointer-events: none;
