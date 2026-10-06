@@ -117,3 +117,36 @@ async def test_open_meteo_parses_caches_and_falls_back(tmp_path):
     cold = OpenMeteoWeather(40, -111, tmp_path / "none.json", "", httpx.AsyncClient(transport=httpx.MockTransport(handler)))
     assert (await cold.get()).status == "sample"
 
+
+
+def test_recipes_listing_photos_and_cooked(tmp_path):
+    folder = tmp_path / "Recipes"
+    (folder / "photos").mkdir(parents=True)
+    (folder / ".obsidian").mkdir()
+    (folder / "Pie.md").write_text("# Pie\n", encoding="utf-8")
+    (folder / ".obsidian" / "x.md").write_text("hidden")
+    (folder / "photos" / "Pie.png").write_bytes(b"png")
+    (folder / "Soup.md").write_text("# Soup\n", encoding="utf-8")
+    cfg = Config(data_dir=tmp_path / "data", web_dist=tmp_path / "nope", recipes_dir=folder)
+    app = create_app(cfg, Providers(SampleWeather(), SampleCalendar(), SampleTodos(), ConfiguredBrief("")),
+                     SettingsStore(tmp_path / "settings.json"), Backlight())
+    with TestClient(app) as c:
+        out = c.get("/api/recipes").json()
+        assert out["status"] == "live"
+        assert [r["id"] for r in out["items"]] == ["Pie", "Soup"]
+        pie = out["items"][0]
+        assert pie["photo"] and out["items"][1]["photo"] is None
+        assert c.get(pie["photo"]).content == b"png"
+        assert c.get("/api/recipes/photo", params={"id": "../../etc/passwd"}).status_code == 404
+        assert c.get("/api/recipes/photo", params={"id": "Soup"}).status_code == 404
+        assert len(c.post("/api/recipes/cooked", params={"id": "Pie"}).json()) == 1
+        assert len(c.post("/api/recipes/cooked", params={"id": "Pie"}).json()) == 1  # same day: once
+        assert c.get("/api/recipes").json()["items"][0]["cooked"]
+        assert c.post("/api/recipes/cooked", params={"id": "Nope"}).status_code == 404
+
+
+def test_sample_cookbook_is_served_by_default(client):
+    out = client.get("/api/recipes").json()
+    assert out["status"] == "sample"
+    assert len(out["items"]) >= 5
+    assert all(r["photo"] for r in out["items"])

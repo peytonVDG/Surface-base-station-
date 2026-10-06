@@ -1,12 +1,22 @@
-<!-- Big shortcuts along the bottom. Their screens are built in later threads. -->
+<!-- Big shortcuts along the bottom. Cookbook and Timers work; the rest arrive in later builds. -->
 <script lang="ts">
   import Icon, { type IconName } from './Icon.svelte';
 
-  let { micMuted, onsoon }: { micMuted: boolean; onsoon: (what: string) => void } = $props();
+  import { clock, remaining } from '../lib/timers';
+  import { timers } from '../lib/timers.svelte';
+
+  let { micMuted, now, onopen }: { micMuted: boolean; now: number; onopen: (what: string) => void } = $props();
+
+  const timerSub = $derived.by(() => {
+    if (!timers.list.length) return 'None set';
+    const next = timers.list.map((t) => remaining(t, now)).sort((a, b) => a - b)[0];
+    const n = timers.list.length;
+    return `${n} running · ${next ? clock(next) : 'Done'}`;
+  });
 
   const items: { id: string; icon: IconName; label: string; sub: string }[] = $derived([
     { id: 'Cookbook', icon: 'book', label: 'Cookbook', sub: 'Recipes' },
-    { id: 'Timers', icon: 'timer', label: 'Timers', sub: 'None set' },
+    { id: 'Timers', icon: 'timer', label: 'Timers', sub: timerSub },
     { id: 'Groceries', icon: 'cart', label: 'Groceries', sub: 'Keep list' },
     { id: 'Voice', icon: micMuted ? 'micOff' : 'mic', label: 'Hey Claude', sub: micMuted ? 'Mic muted' : 'Listening' },
   ]);
@@ -14,7 +24,7 @@
 
 <nav class="dock" aria-label="Shortcuts">
   {#each items as it (it.id)}
-    <button type="button" class="dk" class:book={it.id === 'Cookbook'} onclick={() => onsoon(it.id)}>
+    <button type="button" class="dk" class:book={it.id === 'Cookbook'} onclick={() => onopen(it.id)}>
       <Icon name={it.icon} />
       <div>
         <b>{it.label}</b>

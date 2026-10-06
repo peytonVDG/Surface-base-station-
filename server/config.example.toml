@@ -20,3 +20,8 @@ brief_url = ""
 # Art library folder (images + manifest.json + search index). Default: the starter set in ./art.
 # On the Surface, point this at the microSD card.
 # art_dir = "/media/art"
+
+# Cookbook: the folder of Markdown recipes (Obsidian vault > Recipes, synced from Google Drive
+# with rclone). Photos go in a "photos" folder inside it, named like the note. Leave blank to
+# see the sample cookbook.
+# recipes_dir = "~/kitchen/Recipes"

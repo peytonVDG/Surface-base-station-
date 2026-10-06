@@ -3,6 +3,7 @@
   import BriefCard from './components/BriefCard.svelte';
   import CalendarCard from './components/CalendarCard.svelte';
   import ConnectionsPanel from './components/ConnectionsPanel.svelte';
+  import Cookbook from './components/Cookbook.svelte';
   import CountdownRing from './components/CountdownRing.svelte';
   import Dock from './components/Dock.svelte';
   import Hero from './components/Hero.svelte';
@@ -11,6 +12,8 @@
   import Scene from './components/Scene.svelte';
   import Sky from './components/Sky.svelte';
   import SleepScreen from './components/SleepScreen.svelte';
+  import TimerLayer from './components/TimerLayer.svelte';
+  import TimersSheet from './components/TimersSheet.svelte';
   import TodoCard from './components/TodoCard.svelte';
   import { api } from './lib/api';
   import { leaveInfo } from './lib/leave';
@@ -23,6 +26,8 @@
 
   onMount(startStore);
   let connectionsOpen = $state(false);
+  let cookbookOpen = $state(false);
+  let timersOpen = $state(false);
 
   // Fit the fixed 1368x912 stage to the window (exact on the Surface at 200%).
   let vw = $state(1368);
@@ -143,10 +148,16 @@
           <CalendarCard calendar={app.calendar} now={app.now} h24={s.clock_24h} />
           <TodoCard todos={app.todos} h24={s.clock_24h} />
         </div>
-        <Dock micMuted={s.mic_muted} onsoon={(what) => say(`${what} comes in a later build.`)} />
+        <Dock
+          micMuted={s.mic_muted}
+          now={app.now.getTime()}
+          onopen={(what) => (what === 'Cookbook' ? (cookbookOpen = true) : what === 'Timers' ? (timersOpen = true) : say(`${what} comes in a later build.`))}
+        />
       </div>
     </div>
   </div>
+
+  {#if cookbookOpen}<Cookbook onclose={() => (cookbookOpen = false)} />{/if}
 
   {#if ringOn}<CountdownRing fraction={leave.fraction} minutesLeft={leave.minutes} />{/if}
 
@@ -159,7 +170,10 @@
     onallsettings={() => ((shadeOpen = false), (connectionsOpen = true))}
   />
 
+  {#if timersOpen}<TimersSheet onclose={() => (timersOpen = false)} />{/if}
   {#if connectionsOpen}<ConnectionsPanel onclose={() => (connectionsOpen = false)} />{/if}
+
+  <TimerLayer />
 
   {#if toast}<div class="toast" role="status">{toast}</div>{/if}
   {#if app.offline}<div class="offline" role="status">Can't reach the kitchen server. Showing the last data.</div>{/if}

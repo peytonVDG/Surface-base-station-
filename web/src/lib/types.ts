@@ -55,6 +55,11 @@ export interface Brief {
   updated_at: string | null;
 }
 
+export interface Recipes {
+  status: Status;
+  items: { id: string; markdown: string; photo: string | null; cooked: string[] }[];
+}
+
 export interface ClientConfig {
   latitude: number | null;
   longitude: number | null;

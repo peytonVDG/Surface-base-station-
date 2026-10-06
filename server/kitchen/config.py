@@ -31,6 +31,8 @@ class Config:
     weather_refresh_minutes: int = 15
     # Art library folder: the microSD card (e.g. /media/art) on the Surface. See art.py.
     art_dir: Path = REPO_ROOT / "art"
+    # Folder of Markdown recipe notes (the Obsidian vault's Recipes folder). Empty: the public sample cookbook.
+    recipes_dir: Path | None = None
 
     @property
     def has_location(self) -> bool:
@@ -63,6 +65,8 @@ def load_config(path: str | os.PathLike[str] | None = None, env: dict[str, str] 
         kwargs["data_dir"] = Path(data_dir).expanduser()
     if (web_dist := pick("web_dist")) is not None:
         kwargs["web_dist"] = Path(web_dist).expanduser()
+    if (recipes_dir := pick("recipes_dir")) is not None:
+        kwargs["recipes_dir"] = Path(recipes_dir).expanduser()
     if (art_dir := pick("art_dir")) is not None:
         kwargs["art_dir"] = Path(art_dir).expanduser()
     if (minutes := pick("weather_refresh_minutes", int)) is not None:

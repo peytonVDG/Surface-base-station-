@@ -32,7 +32,7 @@
     inset: 0;
     width: 1368px;
     height: 912px;
-    z-index: 6;
+    z-index: 11;
     pointer-events: none;
   }
   path {

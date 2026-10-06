@@ -5,7 +5,7 @@
 // from Open-Meteo, which allows calls from any web page and needs no key.
 
 import { DEFAULT_SETTINGS } from './defaults';
-import type { Brief, Calendar, ClientConfig, Connections, Condition, DeepPartial, Settings, Todos, Weather } from './types';
+import type { Brief, Recipes, Calendar, ClientConfig, Connections, Condition, DeepPartial, Settings, Todos, Weather } from './types';
 
 const MIDDLEVILLE = { latitude: 42.71, longitude: -85.46, location_name: 'Middleville' };
 
@@ -156,6 +156,27 @@ function merge<T extends object>(base: T, patch: DeepPartial<T>): T {
   return out as T;
 }
 
+// The sample cookbook is the same folder the backend serves by default.
+const noteFiles = import.meta.glob('../../../sample-recipes/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const photoFiles = import.meta.glob('../../../sample-recipes/photos/*', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
+const COOKED_KEY = 'kitchen.demo.cooked';
+function demoCooked(): Record<string, string[]> {
+  try {
+    return JSON.parse(localStorage.getItem(COOKED_KEY) ?? '{}');
+  } catch {
+    return {};
+  }
+}
+function recipes(): Recipes {
+  const cooked = demoCooked();
+  const items = Object.entries(noteFiles).map(([path, markdown]) => {
+    const id = path.split('/').pop()!.replace(/\.md$/, '');
+    const photo = Object.entries(photoFiles).find(([p]) => p.split('/').pop()!.replace(/\.[^.]+$/, '') === id)?.[1] ?? null;
+    return { id, markdown, photo, cooked: cooked[id] ?? [] };
+  });
+  return { status: 'sample', items };
+}
+
 const ok = <T>(v: T) => Promise.resolve(structuredClone(v));
 
 export const demoApi = {
@@ -166,6 +187,18 @@ export const demoApi = {
   setTodoDone: (id: string, done: boolean) => {
     todos = { ...todos, items: todos.items.map((t) => (t.id === id ? { ...t, done } : t)) };
     return ok(todos);
+  },
+  recipes: () => ok(recipes()),
+  markCooked: (id: string) => {
+    const all = demoCooked();
+    const day = new Date().toISOString().slice(0, 10);
+    all[id] = [...new Set([...(all[id] ?? []), day])];
+    try {
+      localStorage.setItem(COOKED_KEY, JSON.stringify(all));
+    } catch {
+      /* fine */
+    }
+    return ok(all[id]);
   },
   brief: () => ok<Brief>({ status: 'sample', url: '', updated_at: null }),
   // The public builds never hold anyone's accounts: sign-in only exists on the device.
