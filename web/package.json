@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "test": "vitest run",
-    "build:demo": "vite build --mode demo && node scripts/inline-demo.mjs"
+    "build:demo": "vite build --mode demo && node scripts/inline-demo.mjs",
+    "build:pages": "vite build --mode pages"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.3.1",

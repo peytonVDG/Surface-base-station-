@@ -51,6 +51,13 @@ For the device, `npm run build` once and the backend serves `web/dist` itself,
 so only the backend runs. `deploy/kitchen-display.service` starts it at login
 and `deploy/kiosk.sh` opens Chromium fullscreen.
 
+### Phone preview (GitHub Pages)
+
+`.github/workflows/pages.yml` publishes `npm run build:pages` on every push:
+the web app on sample calendar and to-dos, with live weather fetched straight
+from Open-Meteo. Turn it on once under Settings > Pages > Source: GitHub
+Actions. It's served at https://peytonvdg.github.io/Surface-base-station-/.
+
 ### Demo build (no backend)
 
 `npm run build:demo` writes `web/dist-demo/demo.html`, one self-contained page

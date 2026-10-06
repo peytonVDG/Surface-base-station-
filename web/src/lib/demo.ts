@@ -1,6 +1,8 @@
-// Backend-free stand-in for the API, used by the phone/browser demo build
-// (`npm run build:demo`). Same sample data as server/kitchen/providers/samples.py,
-// with settings kept in memory (and localStorage when allowed).
+// Backend-free stand-in for the API, used by the phone/browser builds
+// (`npm run build:demo`, `npm run build:pages`). Same sample data as
+// server/kitchen/providers/samples.py, with settings kept in memory (and
+// localStorage when allowed). The Pages build fetches live weather straight
+// from Open-Meteo, which allows calls from any web page and needs no key.
 
 import { DEFAULT_SETTINGS } from './defaults';
 import type { Brief, Calendar, ClientConfig, Condition, DeepPartial, Settings, Todos, Weather } from './types';
@@ -32,6 +34,76 @@ function weather(): Weather {
       precip_prob: conds[i] === 'rain' ? 60 : 10,
     })),
   };
+}
+
+/** Same collapse of WMO codes as server/kitchen/providers/weather.py. */
+export function conditionFor(code: number): Condition {
+  if (code <= 1) return 'clear';
+  if (code === 2) return 'partly';
+  if (code === 3) return 'cloudy';
+  if (code === 45 || code === 48) return 'fog';
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return 'snow';
+  if (code >= 95) return 'storm';
+  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return 'rain';
+  return 'cloudy';
+}
+
+let lastLive: Weather | null = null;
+
+async function liveWeather(): Promise<Weather> {
+  const q = new URLSearchParams({
+    latitude: String(MIDDLEVILLE.latitude),
+    longitude: String(MIDDLEVILLE.longitude),
+    current: 'temperature_2m,weather_code,cloud_cover,precipitation,wind_speed_10m,is_day',
+    hourly: 'temperature_2m,weather_code,precipitation_probability',
+    daily: 'temperature_2m_max,temperature_2m_min,sunrise,sunset',
+    timezone: 'auto',
+    timeformat: 'unixtime',
+    forecast_days: '2',
+  });
+  try {
+    const res = await fetch(`https://api.open-meteo.com/v1/forecast?${q}`);
+    if (!res.ok) throw new Error(`Open-Meteo ${res.status}`);
+    const d = await res.json();
+    const iso = (s: number) => new Date(s * 1000).toISOString();
+    const now = Date.now() / 1000;
+    const hourly = (d.hourly.time as number[])
+      .map((t, i) => ({
+        time: iso(t),
+        temp_c: d.hourly.temperature_2m[i],
+        condition: conditionFor(d.hourly.weather_code[i]),
+        precip_prob: d.hourly.precipitation_probability[i],
+        t,
+      }))
+      .filter((h) => h.t > now)
+      .slice(0, 12)
+      .map(({ t: _t, ...h }) => h);
+    lastLive = {
+      status: 'live',
+      updated_at: new Date().toISOString(),
+      location_name: MIDDLEVILLE.location_name,
+      current: {
+        temp_c: d.current.temperature_2m,
+        condition: conditionFor(d.current.weather_code),
+        code: d.current.weather_code,
+        cloud_cover: d.current.cloud_cover,
+        precip_mm: d.current.precipitation,
+        wind_kph: d.current.wind_speed_10m,
+        is_day: Boolean(d.current.is_day),
+      },
+      today: {
+        high_c: d.daily.temperature_2m_max[0],
+        low_c: d.daily.temperature_2m_min[0],
+        sunrise: iso(d.daily.sunrise[0]),
+        sunset: iso(d.daily.sunset[0]),
+      },
+      hourly,
+    };
+    return lastLive;
+  } catch (e) {
+    console.warn(e);
+    return lastLive ? { ...lastLive, status: 'stale' } : weather();
+  }
 }
 
 function calendar(): Calendar {
@@ -88,7 +160,7 @@ const ok = <T>(v: T) => Promise.resolve(structuredClone(v));
 
 export const demoApi = {
   config: () => ok<ClientConfig>({ ...MIDDLEVILLE, hardware_backlight: false }),
-  weather: () => ok(weather()),
+  weather: () => (import.meta.env.VITE_LIVE_WEATHER ? liveWeather() : ok(weather())),
   calendar: () => ok(calendar()),
   todos: () => ok(todos),
   setTodoDone: (id: string, done: boolean) => {
