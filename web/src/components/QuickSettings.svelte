@@ -134,21 +134,21 @@
     right: 0;
     top: 0;
     height: 44px;
-    z-index: 7;
+    z-index: 12;
     touch-action: none;
   }
   .shade-bg {
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.35);
-    z-index: 8;
+    z-index: 13;
   }
   .shade {
     position: absolute;
     left: 150px;
     right: 150px;
     top: 0;
-    z-index: 9;
+    z-index: 14;
     border-top: 0;
     border-radius: 0 0 20px 20px;
     padding: 24px 28px 14px;

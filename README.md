@@ -7,8 +7,7 @@ backend that holds keys and fetches data, and a Svelte page that only draws.
 Status: **Home screen shell.** Clock, live weather, a sky that follows the real
 sun and weather, the leave-for-work countdown, quick settings and sleep mode all
 work. The brief shows sample data behind a clean interface; Todoist and Google
-Calendar connect from Settings > Connections (see below). Keep, the Obsidian
-cookbook and YouTube come next.
+Calendar connect from Settings > Connections (see below). The cookbook and timers work (see below). Keep and YouTube come next.
 
 ## Layout
 
@@ -30,6 +29,35 @@ deploy/   systemd unit and Chromium kiosk launcher
 
 The page is laid out on a fixed 1368×912 stage (the Surface's 2736×1824 screen
 at 200% scaling) and scaled to fit, so it looks the same in any browser window.
+
+## Cookbook and timers
+
+The **Cookbook** shortcut opens photo tiles with search (names, tags, ingredients), tag
+filters and sorting. A tap opens **cook mode**: one step at a time in big type, ingredients
+that scale with a servings stepper, and a one-tap timer for any step that mentions a time
+("simmer 20 minutes"). Timers run on every screen, ring with a beep and a Dismiss banner,
+and survive a reload. **Cooked it!** logs the date (in the app's data folder, never in your notes).
+
+Recipes are Markdown notes in a folder: set `recipes_dir` in `config.toml` (on the Surface,
+the rclone-synced copy of the Obsidian vault's `Recipes` folder). Without it the app shows
+the public sample cookbook in `sample-recipes/`. A note looks like:
+
+```markdown
+---
+title: Chicken Tortilla Soup
+servings: 6
+time: 45 min
+rating: 4.5
+tags: [soup, chicken]
+---
+## Ingredients
+- 1 1/2 teaspoons ground cumin
+## Steps
+1. Simmer for 20 minutes.
+```
+
+Pictures live next to the note or in `Recipes/photos/`, named like the note
+(`Tortilla Soup.jpg`). Obsidian `[[links]]` and `![[embeds]]` are tolerated.
 
 ## Run it
 

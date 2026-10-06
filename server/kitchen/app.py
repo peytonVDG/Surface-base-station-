@@ -11,14 +11,15 @@ import asyncio
 import contextlib
 import logging
 from dataclasses import dataclass
+from datetime import date
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, ValidationError
 
 from .art import ArtImage, ArtLibrary, ArtStatus
-from .config import Config
+from .config import REPO_ROOT, Config
 from .credentials import CredentialStore
 from .display import Backlight
 from .models import Brief, Calendar, Todos, Weather
@@ -27,6 +28,7 @@ from .providers.google_calendar import GoogleCalendar
 from .providers.samples import ConfiguredBrief
 from .providers.todoist import TodoistTodos
 from .providers.weather import OpenMeteoWeather, SampleWeather
+from .recipes import RecipeStore, Recipes
 from .settings import Settings, SettingsStore
 
 log = logging.getLogger(__name__)
@@ -157,6 +159,32 @@ def create_app(
     @app.get("/api/brief")
     async def brief() -> Brief:
         return await providers.brief.get()
+
+    # --- Cookbook: Markdown notes in a folder; the web app does the parsing. ---
+
+    recipes = RecipeStore(
+        config.recipes_dir or REPO_ROOT / "sample-recipes",
+        config.data_dir / "cooked.json",
+        sample=config.recipes_dir is None,
+    )
+
+    @app.get("/api/recipes")
+    async def list_recipes() -> Recipes:
+        return recipes.list()
+
+    @app.get("/api/recipes/photo")
+    async def recipe_photo(id: str, ext: str = ""):  # ext only lets the page tell art from photos
+        try:
+            return FileResponse(recipes.photo(id))
+        except KeyError:
+            raise HTTPException(404, "No picture for that recipe") from None
+
+    @app.post("/api/recipes/cooked")
+    async def recipe_cooked(id: str) -> list[date]:
+        try:
+            return recipes.mark_cooked(id, date.today())
+        except KeyError:
+            raise HTTPException(404, "No such recipe") from None
 
     # --- Art library: search the local folder first, the web only when nothing fits. ---
 

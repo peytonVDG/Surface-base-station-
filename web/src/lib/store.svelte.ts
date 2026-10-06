@@ -3,7 +3,8 @@
 
 import { api, poll } from './api';
 import { DEFAULT_SETTINGS } from './defaults';
-import type { Brief, Calendar, ClientConfig, DeepPartial, Settings, Todos, Weather } from './types';
+import { checkTimers } from './timers.svelte';
+import type { Brief, Recipes, Calendar, ClientConfig, DeepPartial, Settings, Todos, Weather } from './types';
 
 // Dev/testing overrides: ?at=2026-10-06T05:20 runs the clock from that moment,
 // ?wx=rain forces the weather (clear, partly, cloudy, fog, rain, storm, snow).
@@ -21,6 +22,7 @@ export const app = $state({
   calendar: null as Calendar | null,
   todos: null as Todos | null,
   brief: null as Brief | null,
+  recipes: null as Recipes | null,
   offline: false,
 });
 
@@ -56,9 +58,15 @@ export async function setTodoDone(id: string, done: boolean): Promise<void> {
   }
 }
 
+export async function markCooked(id: string): Promise<void> {
+  const dates = await api.markCooked(id);
+  const r = app.recipes;
+  if (r) app.recipes = { ...r, items: r.items.map((x) => (x.id === id ? { ...x, cooked: dates } : x)) };
+}
+
 /** Start the clock and data polling. Returns a cleanup function. */
 export function startStore(): () => void {
-  const tick = setInterval(() => (app.now = clockNow()), 1000);
+  const tick = setInterval(() => ((app.now = clockNow()), checkTimers(app.now.getTime())), 1000);
   const tracked = <T>(load: () => Promise<T>) => () =>
     load().then(
       (v) => ((app.offline = false), v),
@@ -74,6 +82,7 @@ export function startStore(): () => void {
     poll(tracked(api.calendar), 5, (c) => (app.calendar = c)),
     poll(tracked(api.todos), 2, (t) => (app.todos = t)),
     poll(tracked(api.brief), 30, (b) => (app.brief = b)),
+    poll(api.recipes, 2, (r) => (app.recipes = r)),
   ];
   return () => {
     clearInterval(tick);

@@ -1,5 +1,5 @@
 import { demoApi } from './demo';
-import type { Brief, Calendar, ClientConfig, Connections, DeepPartial, Settings, Todos, Weather } from './types';
+import type { Brief, Recipes, Calendar, ClientConfig, Connections, DeepPartial, Settings, Todos, Weather } from './types';
 
 async function call<T>(method: string, path: string, body?: unknown): Promise<T> {
   const res = await fetch(`/api/${path}`, {
@@ -18,6 +18,8 @@ const serverApi = {
   todos: () => call<Todos>('GET', 'todos'),
   setTodoDone: (id: string, done: boolean) => call<Todos>('PATCH', `todos/${encodeURIComponent(id)}`, { done }),
   brief: () => call<Brief>('GET', 'brief'),
+  recipes: () => call<Recipes>('GET', 'recipes'),
+  markCooked: (id: string) => call<string[]>('POST', `recipes/cooked?id=${encodeURIComponent(id)}`),
   connections: () => call<Connections>('GET', 'connections'),
   connectTodoist: (token: string) => call<Connections>('PUT', 'connections/todoist', { token }),
   disconnectTodoist: () => call<Connections>('DELETE', 'connections/todoist'),
