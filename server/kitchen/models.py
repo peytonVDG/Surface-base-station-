@@ -80,14 +80,3 @@ class Brief(BaseModel):
     status: Status
     url: str
     updated_at: datetime | None = None
-
-
-class Photo(BaseModel):
-    id: str
-    title: str
-    category: str
-    url: str
-
-
-class Photos(BaseModel):
-    photos: list[Photo]

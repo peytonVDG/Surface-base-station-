@@ -13,7 +13,6 @@
     ondim,
     onsleep,
     onallsettings,
-    onphotos,
   }: {
     open: boolean;
     scale: number;
@@ -21,7 +20,6 @@
     ondim: () => void;
     onsleep: () => void;
     onallsettings: () => void;
-    onphotos: () => void;
   } = $props();
 
   let shade: HTMLElement | undefined = $state();
@@ -65,7 +63,6 @@
     { id: 'h24', icon: 'clock', label: '24-hour', on: s.clock_24h, act: () => updateSettings({ clock_24h: !s.clock_24h }) },
     { id: 'night', icon: 'sun', label: 'Night look', on: s.look === 'night', act: () => updateSettings({ look: s.look === 'night' ? 'auto' : 'night' }) },
     { id: 'calm', icon: 'wave', label: 'Calm motion', on: s.animations !== 'full', act: () => updateSettings({ animations: s.animations === 'full' ? 'calm' : 'full' }) },
-    { id: 'photos', icon: 'screen', label: 'Photos', on: false, act: onphotos },
     { id: 'mic', icon: 'micOff', label: 'Mute mic', on: s.mic_muted, act: () => updateSettings({ mic_muted: !s.mic_muted }) },
   ]);
 </script>

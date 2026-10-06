@@ -5,7 +5,7 @@
 // from Open-Meteo, which allows calls from any web page and needs no key.
 
 import { DEFAULT_SETTINGS } from './defaults';
-import type { Brief, Calendar, ClientConfig, Connections, Photo, Condition, DeepPartial, Settings, Todos, Weather } from './types';
+import type { Brief, Calendar, ClientConfig, Connections, Condition, DeepPartial, Settings, Todos, Weather } from './types';
 
 const MIDDLEVILLE = { latitude: 42.71, longitude: -85.46, location_name: 'Middleville' };
 
@@ -168,7 +168,6 @@ export const demoApi = {
     return ok(todos);
   },
   brief: () => ok<Brief>({ status: 'sample', url: '', updated_at: null }),
-  photos: () => ok<{ photos: Photo[] }>({ photos: [] }),
   // The public builds never hold anyone's accounts: sign-in only exists on the device.
   connections: () => ok<Connections>({ todoist: { connected: false }, google: { connected: false, ready: false } }),
   connectTodoist: () => Promise.reject(new Error('Sign-in only works on the display itself')),

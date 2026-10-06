@@ -7,7 +7,6 @@
   import Dock from './components/Dock.svelte';
   import Hero from './components/Hero.svelte';
   import LeaveCard from './components/LeaveCard.svelte';
-  import PhotoBank from './components/PhotoBank.svelte';
   import QuickSettings from './components/QuickSettings.svelte';
   import Scene from './components/Scene.svelte';
   import Sky from './components/Sky.svelte';
@@ -24,7 +23,6 @@
 
   onMount(startStore);
   let connectionsOpen = $state(false);
-  let photosOpen = $state(false);
 
   // Fit the fixed 1368x912 stage to the window (exact on the Surface at 200%).
   let vw = $state(1368);
@@ -158,11 +156,9 @@
     dimmed={dimNow}
     ondim={() => (dimNow = !dimNow)}
     onsleep={sleepNow}
-    onphotos={() => ((shadeOpen = false), (photosOpen = true))}
     onallsettings={() => ((shadeOpen = false), (connectionsOpen = true))}
   />
 
-  {#if photosOpen}<PhotoBank onclose={() => (photosOpen = false)} />{/if}
   {#if connectionsOpen}<ConnectionsPanel onclose={() => (connectionsOpen = false)} />{/if}
 
   {#if toast}<div class="toast" role="status">{toast}</div>{/if}

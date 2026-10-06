@@ -144,14 +144,6 @@ Sign-in reaches the backend at `http://127.0.0.1:8787`, so do it in the
 Surface's own browser. API: `GET /api/connections` reports connected or not and
 never returns a secret.
 
-## Photo bank
-
-Swipe down > Photos. It shows 20 built-in placeholder pictures (drawn as SVG by
-`web/scripts/make-stock-photos.mjs`, so no licences or downloads) in five
-categories, plus your own: put pictures in
-`~/.local/share/kitchen-display/photos/<Category>/` on the Surface (one folder
-per category) and they appear at the top. `GET /api/photos` lists them.
-
 ## Look of the cards
 
 The calendar and to-do cards are drawn in the look of Google Calendar and

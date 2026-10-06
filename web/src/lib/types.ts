@@ -94,11 +94,3 @@ export interface Connections {
   todoist: { connected: boolean };
   google: { connected: boolean; ready: boolean };
 }
-
-export interface Photo {
-  id: string;
-  title: string;
-  category: string;
-  url: string;
-  stock?: boolean;
-}
