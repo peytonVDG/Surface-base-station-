@@ -5,7 +5,7 @@
 // from Open-Meteo, which allows calls from any web page and needs no key.
 
 import { DEFAULT_SETTINGS } from './defaults';
-import type { Brief, Calendar, ClientConfig, Connections, Condition, DeepPartial, Settings, Todos, Weather } from './types';
+import type { Brief, Calendar, ClientConfig, Connections, Photo, Condition, DeepPartial, Settings, Todos, Weather } from './types';
 
 const MIDDLEVILLE = { latitude: 42.71, longitude: -85.46, location_name: 'Middleville' };
 
@@ -108,12 +108,12 @@ async function liveWeather(): Promise<Weather> {
 
 function calendar(): Calendar {
   const rows: [string, string, number, number, number, string, string, number][] = [
-    ['standup', 'Team standup', 8, 30, 15, '#2f6db5', '', 0],
-    ['lunch', 'Lunch with Sam', 12, 0, 60, '#3f8f4f', 'Cafe Rio', 0],
-    ['dentist', 'Dentist', 15, 30, 45, '#c8102e', 'Bright Smiles Dental', 0],
-    ['soccer', 'Soccer pickup', 18, 30, 30, '#e3a400', 'Riverside Park', 0],
-    ['car', 'Car service', 9, 0, 60, '#7e57c2', 'Main St Auto', 1],
-    ['book', 'Book club', 19, 0, 90, '#2f6db5', '', 1],
+    ['standup', 'Team standup', 8, 30, 15, '#039be5', '', 0],
+    ['lunch', 'Lunch with Sam', 12, 0, 60, '#33b679', 'Cafe Rio', 0],
+    ['dentist', 'Dentist', 15, 30, 45, '#d50000', 'Bright Smiles Dental', 0],
+    ['soccer', 'Soccer pickup', 18, 30, 30, '#f6bf26', 'Riverside Park', 0],
+    ['car', 'Car service', 9, 0, 60, '#8e24aa', 'Main St Auto', 1],
+    ['book', 'Book club', 19, 0, 90, '#039be5', '', 1],
   ];
   return {
     status: 'sample',
@@ -127,11 +127,11 @@ function calendar(): Calendar {
 let todos: Todos = {
   status: 'sample',
   items: [
-    { id: '1', title: 'Take the trash out', due: todayAt(20), overdue: false, done: false },
-    { id: '2', title: 'Pick up limes', due: null, overdue: false, done: false },
-    { id: '3', title: 'Call the vet', due: todayAt(9, 0, -1), overdue: true, done: false },
-    { id: '4', title: 'Flu shots', due: null, overdue: false, done: true },
-    { id: '5', title: 'Water the plants', due: null, overdue: false, done: false },
+    { id: '1', title: 'Take the trash out', due: todayAt(20), overdue: false, done: false, priority: 3 },
+    { id: '2', title: 'Pick up limes', due: null, overdue: false, done: false, priority: 4 },
+    { id: '3', title: 'Call the vet', due: todayAt(9, 0, -1), overdue: true, done: false, priority: 1 },
+    { id: '4', title: 'Flu shots', due: null, overdue: false, done: true, priority: 4 },
+    { id: '5', title: 'Water the plants', due: null, overdue: false, done: false, priority: 2 },
   ],
 };
 
@@ -168,6 +168,7 @@ export const demoApi = {
     return ok(todos);
   },
   brief: () => ok<Brief>({ status: 'sample', url: '', updated_at: null }),
+  photos: () => ok<{ photos: Photo[] }>({ photos: [] }),
   // The public builds never hold anyone's accounts: sign-in only exists on the device.
   connections: () => ok<Connections>({ todoist: { connected: false }, google: { connected: false, ready: false } }),
   connectTodoist: () => Promise.reject(new Error('Sign-in only works on the display itself')),

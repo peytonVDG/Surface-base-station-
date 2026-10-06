@@ -116,3 +116,14 @@ async def test_open_meteo_parses_caches_and_falls_back(tmp_path):
     # No cache and no network: sample weather rather than an error.
     cold = OpenMeteoWeather(40, -111, tmp_path / "none.json", "", httpx.AsyncClient(transport=httpx.MockTransport(handler)))
     assert (await cold.get()).status == "sample"
+
+
+def test_photo_bank_lists_user_folders(client, tmp_path):
+    photos = tmp_path / "photos"
+    (photos / "Family").mkdir(parents=True)
+    (photos / "Family" / "beach_day.jpg").write_bytes(b"x")
+    (photos / "Family" / "notes.txt").write_text("not a picture")
+    (photos / "loose one.png").write_bytes(b"x")
+    got = client.get("/api/photos").json()["photos"]
+    assert {(p["category"], p["title"]) for p in got} == {("Family", "Beach day"), ("Photos", "Loose one")}
+    assert client.get(next(p["url"] for p in got if p["category"] == "Family")).status_code == 200

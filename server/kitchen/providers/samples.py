@@ -52,12 +52,12 @@ def sample_weather() -> Weather:
 class SampleCalendar:
     async def get(self) -> Calendar:
         rows = [
-            ("standup", "Team standup", 8, 30, 15, "#2f6db5", ""),
-            ("lunch", "Lunch with Sam", 12, 0, 60, "#3f8f4f", "Cafe Rio"),
-            ("dentist", "Dentist", 15, 30, 45, "#c8102e", "Bright Smiles Dental"),
-            ("soccer", "Soccer pickup", 18, 30, 30, "#e3a400", "Riverside Park"),
-            ("car", "Car service", 9, 0, 60, "#7e57c2", "Main St Auto"),
-            ("book", "Book club", 19, 0, 90, "#2f6db5", ""),
+            ("standup", "Team standup", 8, 30, 15, "#039be5", ""),
+            ("lunch", "Lunch with Sam", 12, 0, 60, "#33b679", "Cafe Rio"),
+            ("dentist", "Dentist", 15, 30, 45, "#d50000", "Bright Smiles Dental"),
+            ("soccer", "Soccer pickup", 18, 30, 30, "#f6bf26", "Riverside Park"),
+            ("car", "Car service", 9, 0, 60, "#8e24aa", "Main St Auto"),
+            ("book", "Book club", 19, 0, 90, "#039be5", ""),
         ]
         events = []
         for i, (eid, title, h, m, dur, color, loc) in enumerate(rows):
@@ -71,11 +71,11 @@ class SampleCalendar:
 class SampleTodos:
     def __init__(self) -> None:
         self._items = [
-            Todo(id="1", title="Take the trash out", due=_today_at(20)),
-            Todo(id="2", title="Pick up limes"),
-            Todo(id="3", title="Call the vet", due=_today_at(9, days=-1), overdue=True),
-            Todo(id="4", title="Flu shots", done=True),
-            Todo(id="5", title="Water the plants"),
+            Todo(id="1", title="Take the trash out", due=_today_at(20), priority=3),
+            Todo(id="2", title="Pick up limes", priority=4),
+            Todo(id="3", title="Call the vet", due=_today_at(9, days=-1), overdue=True, priority=1),
+            Todo(id="4", title="Flu shots", done=True, priority=4),
+            Todo(id="5", title="Water the plants", priority=2),
         ]
 
     async def get(self) -> Todos:

@@ -41,6 +41,7 @@ export interface Todo {
   due: string | null;
   overdue: boolean;
   done: boolean;
+  priority: 1 | 2 | 3 | 4;
 }
 
 export interface Todos {
@@ -92,4 +93,12 @@ export type DeepPartial<T> = { [K in keyof T]?: T[K] extends object ? (T[K] exte
 export interface Connections {
   todoist: { connected: boolean };
   google: { connected: boolean; ready: boolean };
+}
+
+export interface Photo {
+  id: string;
+  title: string;
+  category: string;
+  url: string;
+  stock?: boolean;
 }

@@ -20,11 +20,12 @@ from pydantic import BaseModel, Field, ValidationError
 from .config import Config
 from .credentials import CredentialStore
 from .display import Backlight
-from .models import Brief, Calendar, Todos, Weather
+from .models import Brief, Calendar, Photos, Todos, Weather
 from .providers.base import BriefProvider, CalendarProvider, TodoProvider, WeatherProvider
 from .providers.google_calendar import GoogleCalendar
 from .providers.samples import ConfiguredBrief
 from .providers.todoist import TodoistTodos
+from .photos import scan_photos
 from .providers.weather import OpenMeteoWeather, SampleWeather
 from .settings import Settings, SettingsStore
 
@@ -157,6 +158,10 @@ def create_app(
     async def brief() -> Brief:
         return await providers.brief.get()
 
+    @app.get("/api/photos")
+    async def photos() -> Photos:
+        return Photos(photos=scan_photos(config.data_dir / "photos"))
+
     @app.get("/api/settings")
     async def get_settings() -> Settings:
         return settings.get()
@@ -239,6 +244,10 @@ def create_app(
     @app.put("/api/backlight")
     async def set_backlight(body: BacklightRequest) -> BacklightResult:
         return BacklightResult(hardware=await backlight.set_percent(body.percent))
+
+    photo_dir = config.data_dir / "photos"
+    photo_dir.mkdir(parents=True, exist_ok=True)
+    app.mount("/user-photos", StaticFiles(directory=photo_dir), name="user-photos")
 
     if config.web_dist.is_dir():
         app.mount("/", StaticFiles(directory=config.web_dist, html=True), name="web")
