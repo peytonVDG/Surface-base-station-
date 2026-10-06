@@ -6,8 +6,9 @@ backend that holds keys and fetches data, and a Svelte page that only draws.
 
 Status: **Home screen shell.** Clock, live weather, a sky that follows the real
 sun and weather, the leave-for-work countdown, quick settings and sleep mode all
-work. Calendar, to-dos and the brief show sample data behind clean interfaces;
-Todoist, Google Calendar, Keep, the Obsidian cookbook and YouTube come next.
+work. The brief shows sample data behind a clean interface; Todoist and Google
+Calendar connect from Settings > Connections (see below). Keep, the Obsidian
+cookbook and YouTube come next.
 
 ## Layout
 
@@ -113,6 +114,35 @@ cd web && npm test && npm run check
 | GET | `/api/brief` | Link to the daily-brief artifact |
 | GET, PATCH, DELETE | `/api/settings` | Read, partial update, reset |
 | PUT | `/api/backlight` | `{"percent": 40}` |
+
+## Connecting Todoist and Google Calendar
+
+The repository is public, so no account data, token or secret is ever stored in
+it. You sign in on the Surface itself and the backend keeps the result in
+`~/.local/share/kitchen-display/credentials.json` (owner-only, outside the repo).
+The GitHub Pages preview has no sign-in and only ever shows sample data.
+
+**Todoist** (one minute): in Todoist open Settings > Integrations > Developer,
+copy the API token. On the display: swipe down > All settings > Connections,
+paste it, tap Connect.
+
+**Google Calendar** (one-time setup, about 10 minutes, free):
+
+1. Go to https://console.cloud.google.com/projectcreate, name it "Kitchen display", Create.
+2. Open https://console.cloud.google.com/apis/library/calendar-json.googleapis.com and click Enable.
+3. Open https://console.cloud.google.com/auth/branding, fill in an app name and your email, then Save. Under Audience choose External and add your own Gmail address as a test user.
+4. Open https://console.cloud.google.com/auth/clients, Create client, type "Desktop app", Create. Copy the client ID and client secret.
+5. On the display: Connections > paste both > Save > Sign in with Google, pick your account, Allow. The only permission asked for is read-only calendar access.
+
+While the Google project is in "Testing" mode, Google expires the sign-in after
+7 days. Fix: on the Audience page click Publish app (no review is needed for a
+personal app that only you use; Google shows an "unverified app" warning you can
+click through).
+
+Alternatively put `google_client_id` / `google_client_secret` in `config.toml`.
+Sign-in reaches the backend at `http://127.0.0.1:8787`, so do it in the
+Surface's own browser. API: `GET /api/connections` reports connected or not and
+never returns a secret.
 
 ## Adding an integration
 

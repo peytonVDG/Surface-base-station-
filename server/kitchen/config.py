@@ -23,6 +23,9 @@ class Config:
     location_name: str = ""
     # Link to the scheduled Claude daily-brief artifact. Opened, never summarized.
     brief_url: str = ""
+    # Google OAuth client ("Desktop app" type). Optional here: can also be entered in Settings.
+    google_client_id: str = ""
+    google_client_secret: str = ""
     data_dir: Path = field(default_factory=lambda: Path.home() / ".local/share/kitchen-display")
     web_dist: Path = REPO_ROOT / "web" / "dist"
     weather_refresh_minutes: int = 15
@@ -51,6 +54,8 @@ def load_config(path: str | os.PathLike[str] | None = None, env: dict[str, str] 
         "longitude": pick("longitude", float),
         "location_name": pick("location_name") or "",
         "brief_url": pick("brief_url") or "",
+        "google_client_id": pick("google_client_id") or "",
+        "google_client_secret": pick("google_client_secret") or "",
     }
     if (data_dir := pick("data_dir")) is not None:
         kwargs["data_dir"] = Path(data_dir).expanduser()

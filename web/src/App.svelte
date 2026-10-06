@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import BriefCard from './components/BriefCard.svelte';
   import CalendarCard from './components/CalendarCard.svelte';
+  import ConnectionsPanel from './components/ConnectionsPanel.svelte';
   import CountdownRing from './components/CountdownRing.svelte';
   import Dock from './components/Dock.svelte';
   import Hero from './components/Hero.svelte';
@@ -21,6 +22,7 @@
   import type { Condition } from './lib/types';
 
   onMount(startStore);
+  let connectionsOpen = $state(false);
 
   // Fit the fixed 1368x912 stage to the window (exact on the Surface at 200%).
   let vw = $state(1368);
@@ -154,8 +156,10 @@
     dimmed={dimNow}
     ondim={() => (dimNow = !dimNow)}
     onsleep={sleepNow}
-    onallsettings={() => say('The full Settings screen comes in a later build.')}
+    onallsettings={() => ((shadeOpen = false), (connectionsOpen = true))}
   />
+
+  {#if connectionsOpen}<ConnectionsPanel onclose={() => (connectionsOpen = false)} />{/if}
 
   {#if toast}<div class="toast" role="status">{toast}</div>{/if}
   {#if app.offline}<div class="offline" role="status">Can't reach the kitchen server. Showing the last data.</div>{/if}

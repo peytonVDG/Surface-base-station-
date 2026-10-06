@@ -11,3 +11,8 @@ brief_url = ""
 
 # Where settings.json and the weather cache live.
 # data_dir = "~/.local/share/kitchen-display"
+
+# Google Calendar sign-in (see README, "Connecting Todoist and Google Calendar").
+# Easier: leave these blank and enter them on the display under Settings > Connections.
+# google_client_id = ""
+# google_client_secret = ""
