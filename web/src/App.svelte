@@ -141,7 +141,7 @@
         </div>
         <div class="pair">
           <CalendarCard calendar={app.calendar} now={app.now} h24={s.clock_24h} />
-          <TodoCard todos={app.todos} />
+          <TodoCard todos={app.todos} h24={s.clock_24h} />
         </div>
         <Dock micMuted={s.mic_muted} onsoon={(what) => say(`${what} comes in a later build.`)} />
       </div>
@@ -164,11 +164,23 @@
   {#if toast}<div class="toast" role="status">{toast}</div>{/if}
   {#if app.offline}<div class="offline" role="status">Can't reach the kitchen server. Showing the last data.</div>{/if}
 
+  {#if !sleeping}<div class="build">{__BUILD_LABEL__}</div>{/if}
   {#if sleeping}<SleepScreen now={app.now} h24={s.clock_24h} onwake={wake} />{/if}
   {#if overlay > 0.01}<div class="dim" style:opacity={overlay}></div>{/if}
 </div>
 
 <style>
+  .build {
+    position: absolute;
+    right: 14px;
+    bottom: 8px;
+    font-size: 12px;
+    opacity: 0.4;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    z-index: 5;
+  }
   .screen {
     position: absolute;
     inset: 0;

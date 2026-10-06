@@ -40,7 +40,11 @@ def parse_task(raw: dict, today: date) -> Todo:
                 when = datetime.combine(day, time(23, 59)).astimezone() if day != today else None
         except ValueError:
             when = None
-    return Todo(id=str(raw["id"]), title=raw.get("content", ""), due=when, overdue=overdue, done=bool(raw.get("checked")))
+    return Todo(
+        id=str(raw["id"]), title=raw.get("content", ""), due=when, overdue=overdue, done=bool(raw.get("checked")),
+        # The API counts up (4 = urgent); the app shows P1 as the most urgent.
+        priority=5 - min(max(int(raw.get("priority") or 1), 1), 4),
+    )
 
 
 class TodoistTodos:

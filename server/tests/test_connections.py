@@ -57,7 +57,7 @@ def test_todoist_list_and_check_off(tmp_path):
         assert req.headers["authorization"] == f"Bearer {TOKEN}"
         if req.url.path.endswith("/tasks/filter"):
             return httpx.Response(200, json={"results": [
-                {"id": "a1", "content": "Call the vet", "due": {"date": "2020-01-01"}, "checked": False},
+                {"id": "a1", "content": "Call the vet", "due": {"date": "2020-01-01"}, "checked": False, "priority": 4},
                 {"id": "b2", "content": "Limes", "due": None, "checked": False},
             ]})
         return httpx.Response(204) if "/tasks/" in req.url.path else httpx.Response(200, json={"results": []})
@@ -72,6 +72,7 @@ def test_todoist_list_and_check_off(tmp_path):
         handler_items = c.patch("/api/todos/b2", json={"done": True}).json()["items"]
         assert next(t for t in handler_items if t["id"] == "b2")["done"] is True
         assert ("POST", "/api/v1/tasks/b2/close") in calls
+        assert {t["id"]: t["priority"] for t in todos["items"]} == {"a1": 1, "b2": 4}
         assert c.patch("/api/todos/zzz", json={"done": True}).status_code == 404
 
 
@@ -94,7 +95,7 @@ def test_google_sign_in_flow(tmp_path):
             return httpx.Response(200, json={"access_token": "at2", "expires_in": 3600})
         assert req.headers["authorization"].startswith("Bearer at")
         return httpx.Response(200, json={"items": [
-            {"id": "e1", "summary": "Dentist", "start": {"dateTime": "2026-10-06T15:30:00-04:00"}, "end": {"dateTime": "2026-10-06T16:15:00-04:00"}},
+            {"id": "e1", "summary": "Dentist", "colorId": "11", "start": {"dateTime": "2026-10-06T15:30:00-04:00"}, "end": {"dateTime": "2026-10-06T16:15:00-04:00"}},
             {"id": "e2", "summary": "Off", "start": {"date": "2026-10-07"}, "end": {"date": "2026-10-08"}},
             {"id": "e3", "status": "cancelled", "start": {"date": "2026-10-07"}, "end": {"date": "2026-10-08"}},
         ]})
@@ -122,6 +123,7 @@ def test_google_sign_in_flow(tmp_path):
         assert cal["status"] == "live"
         assert [e["title"] for e in cal["events"]] == ["Dentist", "Off"]
         assert cal["events"][1]["all_day"] is True
+        assert [e["color"] for e in cal["events"]] == ["#d50000", "#039be5"]
 
         assert c.delete("/api/connections/google").json()["google"]["connected"] is False
         assert c.get("/api/calendar").json()["status"] == "sample"

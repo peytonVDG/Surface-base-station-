@@ -116,3 +116,4 @@ async def test_open_meteo_parses_caches_and_falls_back(tmp_path):
     # No cache and no network: sample weather rather than an error.
     cold = OpenMeteoWeather(40, -111, tmp_path / "none.json", "", httpx.AsyncClient(transport=httpx.MockTransport(handler)))
     assert (await cold.get()).status == "sample"
+
