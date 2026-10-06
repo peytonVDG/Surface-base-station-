@@ -7,7 +7,7 @@ backend that holds keys and fetches data, and a Svelte page that only draws.
 Status: **Home screen shell.** Clock, live weather, a sky that follows the real
 sun and weather, the leave-for-work countdown, quick settings and sleep mode all
 work. The brief shows sample data behind a clean interface; Todoist and Google
-Calendar connect from Settings > Connections (see below). The cookbook and timers work (see below). Keep and YouTube come next.
+Calendar connect from Settings > Connections (see below). The cookbook and timers work (see below). The Groceries button opens your Google Keep list. YouTube comes next.
 
 ## Layout
 
@@ -144,6 +144,8 @@ cd web && npm test && npm run check
 | GET, POST | `/api/art/status`, `/api/art/reindex` | Library counts and the `_inbox` queue; rebuild the index |
 | GET, PATCH, DELETE | `/api/settings` | Read, partial update, reset |
 | PUT | `/api/backlight` | `{"percent": 40}` |
+| PUT, DELETE | `/api/connections/keep` | Pick the grocery list (`{"link": ..., "name": ...}`), or forget it |
+| GET | `/api/groceries/open` | Redirects to the picked Keep list (Keep's home page if none) |
 
 ## Art library
 
@@ -195,6 +197,20 @@ Alternatively put `google_client_id` / `google_client_secret` in `config.toml`.
 Sign-in reaches the backend at `http://127.0.0.1:8787`, so do it in the
 Surface's own browser. API: `GET /api/connections` reports connected or not and
 never returns a secret.
+
+## Groceries (Google Keep)
+
+Keep has no official API for personal accounts and refuses to load inside
+another page, so the Groceries button opens the list itself in its own kiosk
+window (the same way as the daily brief). Sign in to Google in that window the
+first time; Chromium remembers it.
+
+Pick the list once: in Chrome on the Surface, open keep.google.com, click the
+grocery list, and copy the link from the address bar (`keep.google.com/#LIST/...`).
+Then paste it in Settings > Connections > Google Keep grocery list, with an
+optional name for the button. The link is stored in `credentials.json` on the
+device, never in the repository. With no list picked, the button opens Keep's
+home page.
 
 ## Look of the cards
 

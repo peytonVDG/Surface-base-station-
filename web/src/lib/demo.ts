@@ -202,11 +202,15 @@ export const demoApi = {
   },
   brief: () => ok<Brief>({ status: 'sample', url: '', updated_at: null }),
   // The public builds never hold anyone's accounts: sign-in only exists on the device.
-  connections: () => ok<Connections>({ todoist: { connected: false }, google: { connected: false, ready: false } }),
+  connections: () =>
+    ok<Connections>({ todoist: { connected: false }, google: { connected: false, ready: false }, keep: { connected: false, name: '' } }),
   connectTodoist: () => Promise.reject(new Error('Sign-in only works on the display itself')),
   disconnectTodoist: () => demoApi.connections(),
   setGoogleClient: () => Promise.reject(new Error('Sign-in only works on the display itself')),
   disconnectGoogle: () => demoApi.connections(),
+  pickKeepList: () => Promise.reject(new Error('Pick the list on the display itself')),
+  forgetKeepList: () => demoApi.connections(),
+  groceriesUrl: 'https://keep.google.com/',
   settings: () => ok(settings),
   patchSettings: (patch: DeepPartial<Settings>) => {
     settings = merge(settings, patch);

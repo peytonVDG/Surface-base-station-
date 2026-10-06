@@ -26,6 +26,10 @@ const serverApi = {
   setGoogleClient: (client_id: string, client_secret: string) =>
     call<Connections>('PUT', 'connections/google/client', { client_id, client_secret }),
   disconnectGoogle: () => call<Connections>('DELETE', 'connections/google'),
+  pickKeepList: (link: string, name: string) => call<Connections>('PUT', 'connections/keep', { link, name }),
+  forgetKeepList: () => call<Connections>('DELETE', 'connections/keep'),
+  /** Where the Groceries button goes: the backend redirects to the picked Keep list. */
+  groceriesUrl: '/api/groceries/open',
   settings: () => call<Settings>('GET', 'settings'),
   patchSettings: (patch: DeepPartial<Settings>) => call<Settings>('PATCH', 'settings', patch),
   backlight: (percent: number) => call<{ hardware: boolean }>('PUT', 'backlight', { percent }),

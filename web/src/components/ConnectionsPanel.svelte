@@ -1,6 +1,7 @@
 <!--
-  Settings > Connections: sign in to Todoist and Google Calendar. Secrets are sent
-  to the backend once and never come back; this panel only learns "connected or not".
+  Settings > Connections: sign in to Todoist and Google Calendar, and pick the Keep
+  grocery list. Secrets are sent to the backend once and never come back; this panel
+  only learns "connected or not".
 -->
 <script lang="ts">
   import { onMount } from 'svelte';
@@ -16,6 +17,8 @@
   let token = $state('');
   let clientId = $state('');
   let clientSecret = $state('');
+  let keepLink = $state('');
+  let keepName = $state('');
 
   onMount(() => {
     api.connections().then((c) => (conn = c)).catch((e) => (error = String(e.message ?? e)));
@@ -36,6 +39,8 @@
   const saveToken = () => run(() => api.connectTodoist(token.trim()).then((c) => ((token = ''), c)));
   const saveClient = () =>
     run(() => api.setGoogleClient(clientId.trim(), clientSecret.trim()).then((c) => ((clientSecret = ''), c)));
+  const saveKeep = () =>
+    run(() => api.pickKeepList(keepLink.trim(), keepName.trim()).then((c) => ((keepLink = keepName = ''), c)));
   // Google's sign-in is a normal page navigation; the backend sends the browser back here when done.
   const signInGoogle = () => (location.href = '/api/connections/google/start');
 </script>
@@ -86,6 +91,24 @@
       {:else}
         <button type="button" class="pill solid" disabled={busy} onclick={signInGoogle}>Sign in with Google</button>
       {/if}
+    {/if}
+  </div>
+
+  <div class="row">
+    <div class="head">
+      <h3>Google Keep grocery list</h3>
+      <span class="state" class:on={conn?.keep.connected}>{conn?.keep.connected ? conn.keep.name || 'Picked' : 'Not picked'}</span>
+    </div>
+    {#if conn?.keep.connected}
+      <p class="help">The Groceries button opens this list. Sign in to Google in that window the first time.</p>
+      <button type="button" class="pill" disabled={busy} onclick={() => run(api.forgetKeepList)}>Pick a different list</button>
+    {:else if !demo}
+      <p class="help">In Chrome, open keep.google.com, click your grocery list, then copy the link from the address bar (it looks like keep.google.com/#LIST/1a2b...) and paste it here.</p>
+      <div class="form">
+        <input placeholder="Paste the Keep list link" autocomplete="off" bind:value={keepLink} />
+        <input class="short" placeholder="Name (optional)" autocomplete="off" maxlength="40" bind:value={keepName} />
+        <button type="button" class="pill solid" disabled={busy || keepLink.trim().length < 10} onclick={saveKeep}>Save</button>
+      </div>
     {/if}
   </div>
 
@@ -156,6 +179,9 @@
     border-radius: 12px;
     background: var(--paper2);
     color: var(--ink);
+  }
+  input.short {
+    flex: 0 0 190px;
   }
   .err {
     margin: 0;

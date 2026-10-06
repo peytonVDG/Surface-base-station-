@@ -98,4 +98,5 @@ export type DeepPartial<T> = { [K in keyof T]?: T[K] extends object ? (T[K] exte
 export interface Connections {
   todoist: { connected: boolean };
   google: { connected: boolean; ready: boolean };
+  keep: { connected: boolean; name: string };
 }
