@@ -1,0 +1,13 @@
+# Copy to config.toml (git-ignored) and fill in. Every field is optional;
+# anything missing falls back to sample data. KITCHEN_<NAME> env vars override these.
+
+# Where the display is. Drives the weather and the real sunrise/sunset sky.
+latitude = 40.76
+longitude = -111.89
+location_name = "Home"
+
+# Link to the scheduled Claude daily-brief artifact (the Home "Open brief" button).
+brief_url = ""
+
+# Where settings.json and the weather cache live.
+# data_dir = "~/.local/share/kitchen-display"

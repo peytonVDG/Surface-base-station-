@@ -1,0 +1,160 @@
+/* Design tokens and shared pieces from the agreed mockup. Layout is a fixed
+   1368x912 stage (the Surface Pro 7 at 200% scaling) scaled to fit the window,
+   so every size below is in Surface layout pixels. */
+
+:root {
+  --f-hand: 'Patrick Hand', 'Comic Neue', cursive;
+  --f-round: 'Fredoka', 'Nunito', system-ui, sans-serif;
+  --f-body: 'Nunito', system-ui, sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+}
+
+.stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1368px;
+  height: 912px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  font-family: var(--f-body);
+  color: var(--ink);
+  color-scheme: light;
+  --paper: #fffdf5;
+  --paper2: #f3eedf;
+  --ink: #1b1b1b;
+  --ink2: #5d574b;
+  --border: #1b1b1b;
+  --shadow: rgba(20, 20, 20, 0.32);
+  --red: #c8102e;
+  --yellow: #f5c518;
+  --blue: #2f6db5;
+  --green: #3f8f4f;
+  --amber: #d98a00;
+  --line2: rgba(27, 27, 27, 0.14);
+  --grass: #7cb661;
+  --grass2: #5f9a4a;
+  --house: #c8102e;
+  --house2: #9c0c23;
+  --hero: #ffffff;
+}
+.stage.dawn { --grass: #6f9d58; --grass2: #5b874a; }
+.stage.dusk { --grass: #557f43; --grass2: #466e38; --house: #b2142e; --house2: #86101f; }
+.stage.wet { --grass: #5f8f4d; --grass2: #4c7a3e; }
+.stage.dark {
+  --paper: #141a2e;
+  --paper2: #1c2440;
+  --ink: #efe9d6;
+  --ink2: #aaa590;
+  --border: rgba(239, 233, 214, 0.5);
+  --shadow: rgba(0, 0, 0, 0.5);
+  --line2: rgba(239, 233, 214, 0.14);
+  --red: #ef5a6b;
+  --blue: #7ea8e6;
+  --green: #6fc07c;
+  --amber: #f0b13a;
+  color-scheme: dark;
+}
+.stage.night { --grass: #1f3a2c; --grass2: #163024; --house: #7d1426; --house2: #5a0e1b; }
+.stage.snowy { --grass: #eef3f7; --grass2: #dbe4ec; }
+.stage.night.snowy { --grass: #9eafc4; --grass2: #8698b0; }
+
+[hidden] { display: none !important; }
+
+.stage :where(button) {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.stage button:focus-visible {
+  outline: 4px solid var(--yellow);
+  outline-offset: 3px;
+}
+
+.panel {
+  background: var(--paper);
+  border: 3px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 6px 7px 0 var(--shadow);
+  padding: 18px 22px;
+  box-sizing: border-box;
+  min-width: 0;
+}
+.ph {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.ph h2 {
+  font-family: var(--f-hand);
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 1;
+  margin: 0;
+}
+.meta {
+  font-size: 15px;
+  color: var(--ink2);
+  font-weight: 700;
+}
+.tag {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--paper2);
+  color: var(--ink2);
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 2.5px solid var(--border);
+  background: var(--paper);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-weight: 800;
+  font-size: 16px;
+}
+.pill.solid {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.ic {
+  width: 1em;
+  height: 1em;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: none;
+}
+
+@keyframes pulse {
+  50% { opacity: 0.35; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage *, .stage *::before, .stage *::after { animation: none !important; }
+}
+.stage.still *, .stage.still *::before, .stage.still *::after { animation: none !important; }
