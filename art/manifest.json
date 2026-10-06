@@ -1,0 +1,1566 @@
+{
+ "version": 1,
+ "images": [
+  {
+   "path": "props/jack-o-lantern.svg",
+   "subject": "pumpkin",
+   "pose": "",
+   "tags": [
+    "pumpkin",
+    "carved",
+    "face",
+    "spooky"
+   ],
+   "holidays": [
+    "halloween"
+   ],
+   "seasons": [
+    "fall"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "orange",
+    "green"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F383 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A carved glowing jack-o-lantern pumpkin",
+   "placeholder": true
+  },
+  {
+   "path": "props/ghost.svg",
+   "subject": "ghost",
+   "pose": "",
+   "tags": [
+    "spooky",
+    "boo",
+    "haunted"
+   ],
+   "holidays": [
+    "halloween"
+   ],
+   "seasons": [
+    "fall"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "white"
+   ],
+   "placement": "sky",
+   "source": "OpenMoji 1F47B (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A friendly white ghost",
+   "placeholder": true
+  },
+  {
+   "path": "props/bat.svg",
+   "subject": "bat",
+   "pose": "",
+   "tags": [
+    "flying",
+    "night",
+    "spooky"
+   ],
+   "holidays": [
+    "halloween"
+   ],
+   "seasons": [
+    "fall"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "brown",
+    "black"
+   ],
+   "placement": "sky",
+   "source": "OpenMoji 1F987 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A bat flying with wings spread",
+   "placeholder": true
+  },
+  {
+   "path": "props/spider-web.svg",
+   "subject": "spider web",
+   "pose": "",
+   "tags": [
+    "cobweb",
+    "spooky",
+    "corner"
+   ],
+   "holidays": [
+    "halloween"
+   ],
+   "seasons": [
+    "fall"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "grey"
+   ],
+   "placement": "corner",
+   "source": "OpenMoji 1F578 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A spider web",
+   "placeholder": true
+  },
+  {
+   "path": "props/christmas-tree.svg",
+   "subject": "christmas tree",
+   "pose": "",
+   "tags": [
+    "tree",
+    "decorated",
+    "lights",
+    "ornaments",
+    "evergreen"
+   ],
+   "holidays": [
+    "christmas"
+   ],
+   "seasons": [
+    "winter"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "green",
+    "red",
+    "yellow"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F384 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A decorated Christmas tree with a star",
+   "placeholder": true
+  },
+  {
+   "path": "props/santa.svg",
+   "subject": "santa claus",
+   "pose": "",
+   "tags": [
+    "santa",
+    "red",
+    "hat",
+    "beard"
+   ],
+   "holidays": [
+    "christmas"
+   ],
+   "seasons": [
+    "winter"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "red",
+    "white"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 1F385 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "Santa Claus smiling",
+   "placeholder": true
+  },
+  {
+   "path": "props/gift.svg",
+   "subject": "gift",
+   "pose": "",
+   "tags": [
+    "present",
+    "wrapped",
+    "box",
+    "ribbon",
+    "surprise"
+   ],
+   "holidays": [
+    "christmas",
+    "birthday"
+   ],
+   "seasons": [
+    "winter"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "red",
+    "yellow"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F381 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A wrapped gift with a ribbon",
+   "placeholder": true
+  },
+  {
+   "path": "props/bell.svg",
+   "subject": "bell",
+   "pose": "",
+   "tags": [
+    "jingle",
+    "ring",
+    "alarm",
+    "timer"
+   ],
+   "holidays": [
+    "christmas"
+   ],
+   "seasons": [
+    "winter"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "yellow"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 1F514 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A golden bell",
+   "placeholder": true
+  },
+  {
+   "path": "props/candle.svg",
+   "subject": "candle",
+   "pose": "",
+   "tags": [
+    "flame",
+    "light",
+    "advent",
+    "vigil"
+   ],
+   "holidays": [
+    "christmas",
+    "easter"
+   ],
+   "seasons": [
+    "winter"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "white",
+    "yellow"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F56F (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A lit candle",
+   "placeholder": true
+  },
+  {
+   "path": "props/snowflake.svg",
+   "subject": "snowflake",
+   "pose": "",
+   "tags": [
+    "snow",
+    "flurry",
+    "cold",
+    "ice"
+   ],
+   "holidays": [
+    "christmas"
+   ],
+   "seasons": [
+    "winter"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "blue",
+    "white"
+   ],
+   "placement": "sky",
+   "source": "OpenMoji 2744 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A single snowflake",
+   "placeholder": true
+  },
+  {
+   "path": "props/snowman.svg",
+   "subject": "snowman",
+   "pose": "",
+   "tags": [
+    "snow",
+    "winter",
+    "carrot",
+    "scarf"
+   ],
+   "holidays": [
+    "christmas"
+   ],
+   "seasons": [
+    "winter"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "white",
+    "orange"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 2603 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A snowman with a scarf",
+   "placeholder": true
+  },
+  {
+   "path": "props/snowman-no-snow.svg",
+   "subject": "snowman",
+   "pose": "",
+   "tags": [
+    "snow",
+    "winter",
+    "hat"
+   ],
+   "holidays": [
+    "christmas"
+   ],
+   "seasons": [
+    "winter"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "white",
+    "black"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 26C4 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A snowman standing in the snow",
+   "placeholder": true
+  },
+  {
+   "path": "props/scarf.svg",
+   "subject": "scarf",
+   "pose": "",
+   "tags": [
+    "winter",
+    "warm",
+    "cold",
+    "knit"
+   ],
+   "holidays": [],
+   "seasons": [
+    "winter"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "red"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 1F9E3 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A cozy red scarf",
+   "placeholder": true
+  },
+  {
+   "path": "props/evergreen-tree.svg",
+   "subject": "tree",
+   "pose": "",
+   "tags": [
+    "pine",
+    "forest",
+    "evergreen"
+   ],
+   "holidays": [
+    "christmas"
+   ],
+   "seasons": [
+    "winter"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "green"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F332 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "An evergreen pine tree",
+   "placeholder": true
+  },
+  {
+   "path": "props/birthday-cake.svg",
+   "subject": "cake",
+   "pose": "",
+   "tags": [
+    "birthday",
+    "candles",
+    "dessert",
+    "celebrate"
+   ],
+   "holidays": [
+    "birthday"
+   ],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "pink",
+    "yellow"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F382 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A birthday cake with candles",
+   "placeholder": true
+  },
+  {
+   "path": "props/balloon.svg",
+   "subject": "balloon",
+   "pose": "",
+   "tags": [
+    "party",
+    "celebrate",
+    "float"
+   ],
+   "holidays": [
+    "birthday",
+    "new-years"
+   ],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "red"
+   ],
+   "placement": "sky",
+   "source": "OpenMoji 1F388 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A red party balloon",
+   "placeholder": true
+  },
+  {
+   "path": "props/party-popper.svg",
+   "subject": "party popper",
+   "pose": "",
+   "tags": [
+    "confetti",
+    "party",
+    "celebrate"
+   ],
+   "holidays": [
+    "birthday",
+    "new-years"
+   ],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "yellow",
+    "red"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 1F389 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A party popper bursting with confetti",
+   "placeholder": true
+  },
+  {
+   "path": "props/partying-face.svg",
+   "subject": "face",
+   "pose": "",
+   "tags": [
+    "party",
+    "hat",
+    "celebrate",
+    "birthday"
+   ],
+   "holidays": [
+    "birthday",
+    "new-years"
+   ],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "yellow"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 1F973 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A face in a party hat blowing a horn",
+   "placeholder": true
+  },
+  {
+   "path": "props/cupcake.svg",
+   "subject": "cupcake",
+   "pose": "",
+   "tags": [
+    "birthday",
+    "dessert",
+    "frosting",
+    "sweet"
+   ],
+   "holidays": [
+    "birthday"
+   ],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "pink"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F9C1 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A frosted cupcake with a cherry",
+   "placeholder": true
+  },
+  {
+   "path": "props/fireworks.svg",
+   "subject": "fireworks",
+   "pose": "",
+   "tags": [
+    "night",
+    "sky",
+    "celebrate",
+    "explosion"
+   ],
+   "holidays": [
+    "new-years",
+    "independence-day"
+   ],
+   "seasons": [
+    "summer"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "blue",
+    "red"
+   ],
+   "placement": "sky",
+   "source": "OpenMoji 1F386 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "Fireworks bursting in the night sky",
+   "placeholder": true
+  },
+  {
+   "path": "props/sparkler.svg",
+   "subject": "sparkler",
+   "pose": "",
+   "tags": [
+    "night",
+    "sparkle",
+    "celebrate"
+   ],
+   "holidays": [
+    "new-years",
+    "independence-day"
+   ],
+   "seasons": [
+    "summer"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "yellow"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 1F387 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A hand-held sparkler",
+   "placeholder": true
+  },
+  {
+   "path": "props/turkey.svg",
+   "subject": "turkey",
+   "pose": "",
+   "tags": [
+    "thanksgiving",
+    "bird",
+    "feathers"
+   ],
+   "holidays": [
+    "thanksgiving"
+   ],
+   "seasons": [
+    "fall"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "brown",
+    "red"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F983 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A turkey with fanned tail feathers",
+   "placeholder": true
+  },
+  {
+   "path": "props/pie.svg",
+   "subject": "pie",
+   "pose": "",
+   "tags": [
+    "thanksgiving",
+    "dessert",
+    "baking",
+    "pumpkin"
+   ],
+   "holidays": [
+    "thanksgiving"
+   ],
+   "seasons": [
+    "fall"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "brown"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F967 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A freshly baked pie",
+   "placeholder": true
+  },
+  {
+   "path": "props/corn.svg",
+   "subject": "corn",
+   "pose": "",
+   "tags": [
+    "thanksgiving",
+    "harvest",
+    "vegetable"
+   ],
+   "holidays": [
+    "thanksgiving"
+   ],
+   "seasons": [
+    "fall"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "yellow",
+    "green"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F33D (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "An ear of corn",
+   "placeholder": true
+  },
+  {
+   "path": "props/fallen-leaf.svg",
+   "subject": "leaf",
+   "pose": "",
+   "tags": [
+    "autumn",
+    "falling",
+    "leaves"
+   ],
+   "holidays": [
+    "thanksgiving",
+    "halloween"
+   ],
+   "seasons": [
+    "fall"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "brown",
+    "orange"
+   ],
+   "placement": "sky",
+   "source": "OpenMoji 1F342 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A fallen autumn leaf",
+   "placeholder": true
+  },
+  {
+   "path": "props/maple-leaf.svg",
+   "subject": "leaf",
+   "pose": "",
+   "tags": [
+    "autumn",
+    "falling",
+    "leaves",
+    "maple"
+   ],
+   "holidays": [
+    "thanksgiving"
+   ],
+   "seasons": [
+    "fall"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "red",
+    "orange"
+   ],
+   "placement": "sky",
+   "source": "OpenMoji 1F341 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A red maple leaf",
+   "placeholder": true
+  },
+  {
+   "path": "props/rabbit.svg",
+   "subject": "rabbit",
+   "pose": "",
+   "tags": [
+    "bunny",
+    "spring",
+    "easter"
+   ],
+   "holidays": [
+    "easter"
+   ],
+   "seasons": [
+    "spring"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "white",
+    "pink"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F430 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A rabbit face",
+   "placeholder": true
+  },
+  {
+   "path": "props/egg.svg",
+   "subject": "egg",
+   "pose": "",
+   "tags": [
+    "easter",
+    "breakfast",
+    "food"
+   ],
+   "holidays": [
+    "easter"
+   ],
+   "seasons": [
+    "spring"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "white"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F95A (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "An egg",
+   "placeholder": true
+  },
+  {
+   "path": "props/tulip.svg",
+   "subject": "flower",
+   "pose": "",
+   "tags": [
+    "spring",
+    "bloom",
+    "garden"
+   ],
+   "holidays": [
+    "easter",
+    "mothers-day"
+   ],
+   "seasons": [
+    "spring"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "pink",
+    "green"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F337 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A pink tulip",
+   "placeholder": true
+  },
+  {
+   "path": "props/rose.svg",
+   "subject": "flower",
+   "pose": "",
+   "tags": [
+    "romantic",
+    "bloom",
+    "garden",
+    "red"
+   ],
+   "holidays": [
+    "valentines",
+    "mothers-day"
+   ],
+   "seasons": [
+    "spring",
+    "summer"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "red",
+    "green"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F339 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A red rose",
+   "placeholder": true
+  },
+  {
+   "path": "props/heart.svg",
+   "subject": "heart",
+   "pose": "",
+   "tags": [
+    "love",
+    "red",
+    "romantic"
+   ],
+   "holidays": [
+    "valentines"
+   ],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "red"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 2764 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A red heart",
+   "placeholder": true
+  },
+  {
+   "path": "props/four-leaf-clover.svg",
+   "subject": "clover",
+   "pose": "",
+   "tags": [
+    "lucky",
+    "green",
+    "shamrock"
+   ],
+   "holidays": [
+    "st-patricks"
+   ],
+   "seasons": [
+    "spring"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "green"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F340 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A lucky four-leaf clover",
+   "placeholder": true
+  },
+  {
+   "path": "props/rainbow.svg",
+   "subject": "rainbow",
+   "pose": "",
+   "tags": [
+    "sky",
+    "colorful",
+    "rain",
+    "after"
+   ],
+   "holidays": [
+    "st-patricks"
+   ],
+   "seasons": [
+    "spring"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "multicolor"
+   ],
+   "placement": "sky",
+   "source": "OpenMoji 1F308 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A rainbow arching across the sky",
+   "placeholder": true
+  },
+  {
+   "path": "props/sunflower.svg",
+   "subject": "flower",
+   "pose": "",
+   "tags": [
+    "summer",
+    "bloom",
+    "garden",
+    "yellow"
+   ],
+   "holidays": [],
+   "seasons": [
+    "summer",
+    "fall"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "yellow",
+    "green"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F33B (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A sunflower",
+   "placeholder": true
+  },
+  {
+   "path": "props/sun.svg",
+   "subject": "sun",
+   "pose": "",
+   "tags": [
+    "sunny",
+    "clear",
+    "bright",
+    "warm"
+   ],
+   "holidays": [],
+   "seasons": [
+    "summer"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "yellow"
+   ],
+   "placement": "sky",
+   "source": "OpenMoji 2600 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A bright sun",
+   "placeholder": true
+  },
+  {
+   "path": "props/hot-dog.svg",
+   "subject": "hot dog",
+   "pose": "",
+   "tags": [
+    "cookout",
+    "grill",
+    "summer",
+    "food"
+   ],
+   "holidays": [
+    "independence-day"
+   ],
+   "seasons": [
+    "summer"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "red",
+    "yellow"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F32D (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A hot dog with mustard",
+   "placeholder": true
+  },
+  {
+   "path": "props/frying-pan.svg",
+   "subject": "frying pan",
+   "pose": "",
+   "tags": [
+    "cooking",
+    "egg",
+    "breakfast",
+    "kitchen"
+   ],
+   "holidays": [],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "grey",
+    "yellow"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 1F373 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A pan frying an egg",
+   "placeholder": true
+  },
+  {
+   "path": "props/pot-of-food.svg",
+   "subject": "pot of food",
+   "pose": "",
+   "tags": [
+    "cooking",
+    "stew",
+    "soup",
+    "dinner",
+    "kitchen"
+   ],
+   "holidays": [],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "red"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 1F372 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A pot of stew",
+   "placeholder": true
+  },
+  {
+   "path": "props/bread.svg",
+   "subject": "bread",
+   "pose": "",
+   "tags": [
+    "baking",
+    "loaf",
+    "kitchen"
+   ],
+   "holidays": [],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "brown"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 1F35E (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A loaf of bread",
+   "placeholder": true
+  },
+  {
+   "path": "props/cookie.svg",
+   "subject": "cookie",
+   "pose": "",
+   "tags": [
+    "baking",
+    "dessert",
+    "chocolate",
+    "chip",
+    "kitchen"
+   ],
+   "holidays": [
+    "christmas"
+   ],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "brown"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 1F36A (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A chocolate chip cookie",
+   "placeholder": true
+  },
+  {
+   "path": "props/chocolate-bar.svg",
+   "subject": "chocolate",
+   "pose": "",
+   "tags": [
+    "candy",
+    "dessert",
+    "sweet"
+   ],
+   "holidays": [
+    "halloween",
+    "valentines"
+   ],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "brown"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 1F36B (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A chocolate bar",
+   "placeholder": true
+  },
+  {
+   "path": "props/candy.svg",
+   "subject": "candy",
+   "pose": "",
+   "tags": [
+    "halloween",
+    "trick",
+    "or",
+    "treat",
+    "sweet"
+   ],
+   "holidays": [
+    "halloween"
+   ],
+   "seasons": [
+    "fall"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "pink"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 1F36C (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A wrapped candy",
+   "placeholder": true
+  },
+  {
+   "path": "props/hut.svg",
+   "subject": "doghouse stand-in",
+   "pose": "",
+   "tags": [
+    "house",
+    "shelter",
+    "roof",
+    "home"
+   ],
+   "holidays": [],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "brown",
+    "yellow"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F6D6 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A small hut, placeholder for the doghouse",
+   "placeholder": true
+  },
+  {
+   "path": "props/crescent-moon.svg",
+   "subject": "moon",
+   "pose": "",
+   "tags": [
+    "night",
+    "sleep",
+    "sky",
+    "crescent"
+   ],
+   "holidays": [],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "yellow"
+   ],
+   "placement": "sky",
+   "source": "OpenMoji 1F319 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A crescent moon",
+   "placeholder": true
+  },
+  {
+   "path": "props/star.svg",
+   "subject": "star",
+   "pose": "",
+   "tags": [
+    "night",
+    "sky",
+    "twinkle"
+   ],
+   "holidays": [
+    "christmas"
+   ],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "yellow"
+   ],
+   "placement": "sky",
+   "source": "OpenMoji 2B50 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A yellow star",
+   "placeholder": true
+  },
+  {
+   "path": "props/zzz.svg",
+   "subject": "zzz",
+   "pose": "",
+   "tags": [
+    "sleep",
+    "snore",
+    "night",
+    "power-saving"
+   ],
+   "holidays": [],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "blue"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 1F4A4 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "Sleeping zzz",
+   "placeholder": true
+  },
+  {
+   "path": "props/football.svg",
+   "subject": "football",
+   "pose": "",
+   "tags": [
+    "game",
+    "day",
+    "sports"
+   ],
+   "holidays": [
+    "game-day"
+   ],
+   "seasons": [
+    "fall"
+   ],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "brown"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 1F3C8 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "An American football",
+   "placeholder": true
+  },
+  {
+   "path": "props/church.svg",
+   "subject": "church",
+   "pose": "",
+   "tags": [
+    "sunday",
+    "worship",
+    "steeple"
+   ],
+   "holidays": [
+    "sunday"
+   ],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "white"
+   ],
+   "placement": "ground",
+   "source": "OpenMoji 26EA (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A small church",
+   "placeholder": true
+  },
+  {
+   "path": "props/music-notes.svg",
+   "subject": "music",
+   "pose": "",
+   "tags": [
+    "song",
+    "notes",
+    "youtube"
+   ],
+   "holidays": [],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "black"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 1F3B6 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "Musical notes",
+   "placeholder": true
+  },
+  {
+   "path": "props/timer.svg",
+   "subject": "timer",
+   "pose": "",
+   "tags": [
+    "clock",
+    "countdown",
+    "cooking"
+   ],
+   "holidays": [],
+   "seasons": [],
+   "format": "svg",
+   "transparent": true,
+   "vector": true,
+   "animated": false,
+   "width": 72,
+   "height": 72,
+   "colors": [
+    "grey"
+   ],
+   "placement": "overlay",
+   "source": "OpenMoji 23F2 (openmoji.org)",
+   "license": "CC BY-SA 4.0",
+   "added": "2026-10-06",
+   "caption": "A kitchen timer clock",
+   "placeholder": true
+  }
+ ]
+}

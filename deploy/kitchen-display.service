@@ -1,0 +1,14 @@
+# systemd user service for the backend. Install:
+#   cp deploy/kitchen-display.service ~/.config/systemd/user/
+#   systemctl --user enable --now kitchen-display
+[Unit]
+Description=Kitchen display backend
+After=network-online.target
+
+[Service]
+WorkingDirectory=%h/surface-base-station-/server
+ExecStart=%h/surface-base-station-/server/.venv/bin/python -m kitchen
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

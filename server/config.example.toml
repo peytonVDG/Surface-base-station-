@@ -1,0 +1,22 @@
+# Copy to config.toml (git-ignored) and fill in. Every field is optional;
+# anything missing falls back to sample data. KITCHEN_<NAME> env vars override these.
+
+# Where the display is. Drives the weather and the real sunrise/sunset sky.
+latitude = 42.71
+longitude = -85.46
+location_name = "Middleville"
+
+# Link to the scheduled Claude daily-brief artifact (the Home "Open brief" button).
+brief_url = ""
+
+# Where settings.json and the weather cache live.
+# data_dir = "~/.local/share/kitchen-display"
+
+# Google Calendar sign-in (see README, "Connecting Todoist and Google Calendar").
+# Easier: leave these blank and enter them on the display under Settings > Connections.
+# google_client_id = ""
+# google_client_secret = ""
+
+# Art library folder (images + manifest.json + search index). Default: the starter set in ./art.
+# On the Surface, point this at the microSD card.
+# art_dir = "/media/art"
