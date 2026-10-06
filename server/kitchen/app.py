@@ -10,6 +10,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import logging
+import re
 from dataclasses import dataclass
 from datetime import date
 
@@ -70,9 +71,20 @@ class ConnectionStatus(BaseModel):
     ready: bool = True  # Google only: a client ID and secret are set, so sign-in can start
 
 
+class KeepStatus(BaseModel):
+    connected: bool  # a grocery list has been picked
+    name: str = ""
+
+
 class Connections(BaseModel):
     todoist: ConnectionStatus
     google: ConnectionStatus
+    keep: KeepStatus
+
+
+class KeepList(BaseModel):
+    link: str = Field(min_length=10, max_length=500)
+    name: str = Field(default="", max_length=40)
 
 
 class TodoistToken(BaseModel):
@@ -90,6 +102,19 @@ class BacklightRequest(BaseModel):
 
 class BacklightResult(BaseModel):
     hardware: bool
+
+
+KEEP_HOME = "https://keep.google.com/"
+# keep.google.com/#LIST/<id>, /u/0/#NOTE/<id>, ... or just the id itself.
+_KEEP_LINK = re.compile(r"^(?:https?://keep\.google\.com/(?:u/\d+/)?#(LIST|NOTE)/)?([A-Za-z0-9._-]{10,200})/?$")
+
+
+def keep_list_url(link: str) -> str | None:
+    """The canonical address of a Keep note from a pasted link or ID, or None if it isn't one."""
+    m = _KEEP_LINK.match(link.strip())
+    if not m:
+        return None
+    return f"{KEEP_HOME}#{m.group(1) or 'NOTE'}/{m.group(2)}"
 
 
 def _done_page(ok: bool, message: str) -> str:
@@ -239,10 +264,11 @@ def create_app(
 
     @app.get("/api/connections")
     async def connections() -> Connections:
-        g, t = google(), todoist()
+        g, t, keep = google(), todoist(), creds.get("keep")
         return Connections(
             todoist=ConnectionStatus(connected=t.connected),
             google=ConnectionStatus(connected=g.connected, ready=g.client_credentials() is not None),
+            keep=KeepStatus(connected=bool(keep.get("url")), name=keep.get("name", "")),
         )
 
     @app.put("/api/connections/todoist")
@@ -284,6 +310,26 @@ def create_app(
     async def disconnect_google() -> Connections:
         google().disconnect()
         return await connections()
+
+    # --- Groceries: Keep has no API for personal accounts and won't load in a frame, so the
+    # Groceries button opens the picked list itself in the kiosk's signed-in browser. ---
+
+    @app.put("/api/connections/keep")
+    async def pick_keep_list(body: KeepList) -> Connections:
+        url = keep_list_url(body.link)
+        if not url:
+            raise HTTPException(422, "That doesn't look like a Google Keep link")
+        creds.update("keep", url=url, name=body.name.strip() or None)
+        return await connections()
+
+    @app.delete("/api/connections/keep")
+    async def forget_keep_list() -> Connections:
+        creds.clear("keep")
+        return await connections()
+
+    @app.get("/api/groceries/open")
+    async def open_groceries():
+        return RedirectResponse(creds.get("keep").get("url") or KEEP_HOME)
 
     @app.put("/api/backlight")
     async def set_backlight(body: BacklightRequest) -> BacklightResult:

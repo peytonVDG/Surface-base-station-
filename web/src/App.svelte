@@ -29,6 +29,18 @@
   let cookbookOpen = $state(false);
   let timersOpen = $state(false);
 
+  // Groceries opens the picked Google Keep list in its own signed-in window.
+  let keepName = $state('');
+  let keepPicked = $state(false);
+  function loadKeep() {
+    api
+      .connections()
+      .then((c) => ((keepPicked = c.keep.connected), (keepName = c.keep.name)))
+      .catch(console.warn);
+  }
+  onMount(loadKeep);
+  const openGroceries = () => window.open(api.groceriesUrl, 'kitchen-groceries');
+
   // Fit the fixed 1368x912 stage to the window (exact on the Surface at 200%).
   let vw = $state(1368);
   let vh = $state(912);
@@ -151,7 +163,15 @@
         <Dock
           micMuted={s.mic_muted}
           now={app.now.getTime()}
-          onopen={(what) => (what === 'Cookbook' ? (cookbookOpen = true) : what === 'Timers' ? (timersOpen = true) : say(`${what} comes in a later build.`))}
+          groceries={keepPicked ? keepName || 'Keep list' : 'Open Keep'}
+          onopen={(what) =>
+            what === 'Cookbook'
+              ? (cookbookOpen = true)
+              : what === 'Timers'
+                ? (timersOpen = true)
+                : what === 'Groceries'
+                  ? openGroceries()
+                  : say(`${what} comes in a later build.`)}
         />
       </div>
     </div>
@@ -171,7 +191,7 @@
   />
 
   {#if timersOpen}<TimersSheet onclose={() => (timersOpen = false)} />{/if}
-  {#if connectionsOpen}<ConnectionsPanel onclose={() => (connectionsOpen = false)} />{/if}
+  {#if connectionsOpen}<ConnectionsPanel onclose={() => ((connectionsOpen = false), loadKeep())} />{/if}
 
   <TimerLayer />
 

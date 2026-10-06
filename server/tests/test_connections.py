@@ -147,3 +147,23 @@ def test_google_start_needs_client(tmp_path):
         assert c.get("/api/connections/google/start", follow_redirects=False).status_code == 409
         c.put("/api/connections/google/client", json={"client_id": "x" * 20, "client_secret": "y" * 10})
         assert c.get("/api/connections").json()["google"]["ready"] is True
+
+
+def test_keep_grocery_list(tmp_path):
+    c, creds = make(tmp_path, lambda r: httpx.Response(200, json={"results": []}))
+    with c:
+        assert c.get("/api/connections").json()["keep"] == {"connected": False, "name": ""}
+        # Nothing picked yet: the button opens Keep's home page.
+        out = c.get("/api/groceries/open", follow_redirects=False)
+        assert out.headers["location"] == "https://keep.google.com/"
+
+        assert c.put("/api/connections/keep", json={"link": "https://example.com/#LIST/abcdefghij"}).status_code == 422
+        out = c.put("/api/connections/keep", json={"link": " https://keep.google.com/u/0/#LIST/1aBc-d_EfGhIjK ", "name": "Groceries"})
+        assert out.json()["keep"] == {"connected": True, "name": "Groceries"}
+        assert creds.get("keep")["url"] == "https://keep.google.com/#LIST/1aBc-d_EfGhIjK"
+        out = c.get("/api/groceries/open", follow_redirects=False)
+        assert out.headers["location"] == "https://keep.google.com/#LIST/1aBc-d_EfGhIjK"
+
+        c.put("/api/connections/keep", json={"link": "1aBc-d_EfGhIjKlMn"})
+        assert creds.get("keep") == {"url": "https://keep.google.com/#NOTE/1aBc-d_EfGhIjKlMn"}
+        assert c.delete("/api/connections/keep").json()["keep"]["connected"] is False

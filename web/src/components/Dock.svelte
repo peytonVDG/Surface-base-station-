@@ -1,11 +1,16 @@
-<!-- Big shortcuts along the bottom. Cookbook and Timers work; the rest arrive in later builds. -->
+<!-- Big shortcuts along the bottom. Cookbook, Timers and Groceries work; voice arrives in a later build. -->
 <script lang="ts">
   import Icon, { type IconName } from './Icon.svelte';
 
   import { clock, remaining } from '../lib/timers';
   import { timers } from '../lib/timers.svelte';
 
-  let { micMuted, now, onopen }: { micMuted: boolean; now: number; onopen: (what: string) => void } = $props();
+  let {
+    micMuted,
+    now,
+    groceries,
+    onopen,
+  }: { micMuted: boolean; now: number; groceries: string; onopen: (what: string) => void } = $props();
 
   const timerSub = $derived.by(() => {
     if (!timers.list.length) return 'None set';
@@ -17,7 +22,7 @@
   const items: { id: string; icon: IconName; label: string; sub: string }[] = $derived([
     { id: 'Cookbook', icon: 'book', label: 'Cookbook', sub: 'Recipes' },
     { id: 'Timers', icon: 'timer', label: 'Timers', sub: timerSub },
-    { id: 'Groceries', icon: 'cart', label: 'Groceries', sub: 'Keep list' },
+    { id: 'Groceries', icon: 'cart', label: 'Groceries', sub: groceries },
     { id: 'Voice', icon: micMuted ? 'micOff' : 'mic', label: 'Hey Claude', sub: micMuted ? 'Mic muted' : 'Listening' },
   ]);
 </script>
