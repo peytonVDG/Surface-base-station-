@@ -112,8 +112,32 @@ cd web && npm test && npm run check
 | GET | `/api/calendar` | Today's and tomorrow's events |
 | GET, PATCH | `/api/todos`, `/api/todos/{id}` | List; `{"done": true}` to check off |
 | GET | `/api/brief` | Link to the daily-brief artifact |
+| GET | `/api/art/search` | Search the art library (`q`, `holiday`, `placement`, `vector`, `transparent`, `animated`) |
+| GET, POST | `/api/art/status`, `/api/art/reindex` | Library counts and the `_inbox` queue; rebuild the index |
 | GET, PATCH, DELETE | `/api/settings` | Read, partial update, reset |
 | PUT | `/api/backlight` | `{"percent": 40}` |
+
+## Art library
+
+`art/` holds the images the display draws on (holiday props, characters, scenes) and a
+`manifest.json` describing each one: subject, tags, holidays, seasons, where it sits on
+screen (`ground`, `sky`, `overlay`, `corner`, `full-background`), vector/transparent/animated
+flags, and a caption. The server builds a search index (`index.sqlite`) from that, so
+looking something up never opens an image. Search it first; only go to the web when
+nothing fits, then add what you found.
+
+The repo ships ~50 freely licensed placeholder props (OpenMoji, see `art/CREDITS.md`).
+On the Surface, point `art_dir` in `config.toml` at the microSD card (for example
+`/media/art`) using the same layout (`characters/`, `props/`, `scenes/`, `animated/`).
+Real Peanuts art goes only on that card, never in this public repo.
+
+```
+kitchen-art search ghost --holiday halloween   # find images
+kitchen-art pending                            # files waiting in _inbox/
+kitchen-art add dancing.gif --folder characters/snoopy --subject snoopy \
+    --caption "Snoopy dances" --holidays birthday --placement overlay
+kitchen-art reindex                            # after editing manifest.json by hand
+```
 
 ## Connecting Todoist and Google Calendar
 

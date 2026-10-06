@@ -1,0 +1,4 @@
+index.sqlite
+_thumbs/
+_inbox/*
+!_inbox/.gitkeep

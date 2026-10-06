@@ -16,3 +16,7 @@ brief_url = ""
 # Easier: leave these blank and enter them on the display under Settings > Connections.
 # google_client_id = ""
 # google_client_secret = ""
+
+# Art library folder (images + manifest.json + search index). Default: the starter set in ./art.
+# On the Surface, point this at the microSD card.
+# art_dir = "/media/art"

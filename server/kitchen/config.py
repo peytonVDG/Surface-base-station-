@@ -29,6 +29,8 @@ class Config:
     data_dir: Path = field(default_factory=lambda: Path.home() / ".local/share/kitchen-display")
     web_dist: Path = REPO_ROOT / "web" / "dist"
     weather_refresh_minutes: int = 15
+    # Art library folder: the microSD card (e.g. /media/art) on the Surface. See art.py.
+    art_dir: Path = REPO_ROOT / "art"
 
     @property
     def has_location(self) -> bool:
@@ -61,6 +63,8 @@ def load_config(path: str | os.PathLike[str] | None = None, env: dict[str, str] 
         kwargs["data_dir"] = Path(data_dir).expanduser()
     if (web_dist := pick("web_dist")) is not None:
         kwargs["web_dist"] = Path(web_dist).expanduser()
+    if (art_dir := pick("art_dir")) is not None:
+        kwargs["art_dir"] = Path(art_dir).expanduser()
     if (minutes := pick("weather_refresh_minutes", int)) is not None:
         kwargs["weather_refresh_minutes"] = minutes
     return Config(**kwargs)

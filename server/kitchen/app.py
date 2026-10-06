@@ -17,6 +17,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, ValidationError
 
+from .art import ArtImage, ArtLibrary, ArtStatus
 from .config import Config
 from .credentials import CredentialStore
 from .display import Backlight
@@ -157,6 +158,26 @@ def create_app(
     async def brief() -> Brief:
         return await providers.brief.get()
 
+    # --- Art library: search the local folder first, the web only when nothing fits. ---
+
+    art = ArtLibrary(config.art_dir)
+
+    @app.get("/api/art/search")
+    async def art_search(q: str = "", holiday: str = "", placement: str = "", vector: bool | None = None,
+                         transparent: bool | None = None, animated: bool | None = None,
+                         limit: int = 20) -> list[ArtImage]:
+        return art.search(q, holiday=holiday, placement=placement, vector=vector, transparent=transparent,
+                          animated=animated, limit=limit)
+
+    @app.get("/api/art/status")
+    async def art_status() -> ArtStatus:
+        return art.status()
+
+    @app.post("/api/art/reindex")
+    async def art_reindex() -> ArtStatus:
+        art.reindex()
+        return art.status()
+
     @app.get("/api/settings")
     async def get_settings() -> Settings:
         return settings.get()
@@ -239,6 +260,9 @@ def create_app(
     @app.put("/api/backlight")
     async def set_backlight(body: BacklightRequest) -> BacklightResult:
         return BacklightResult(hardware=await backlight.set_percent(body.percent))
+
+    if art.exists:
+        app.mount("/art-files", StaticFiles(directory=config.art_dir), name="art-files")
 
     if config.web_dist.is_dir():
         app.mount("/", StaticFiles(directory=config.web_dist, html=True), name="web")
