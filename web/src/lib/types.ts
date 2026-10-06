@@ -41,6 +41,7 @@ export interface Todo {
   due: string | null;
   overdue: boolean;
   done: boolean;
+  priority: 1 | 2 | 3 | 4;
 }
 
 export interface Todos {

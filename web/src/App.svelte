@@ -141,7 +141,7 @@
         </div>
         <div class="pair">
           <CalendarCard calendar={app.calendar} now={app.now} h24={s.clock_24h} />
-          <TodoCard todos={app.todos} />
+          <TodoCard todos={app.todos} h24={s.clock_24h} />
         </div>
         <Dock micMuted={s.mic_muted} onsoon={(what) => say(`${what} comes in a later build.`)} />
       </div>

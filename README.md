@@ -144,6 +144,14 @@ Sign-in reaches the backend at `http://127.0.0.1:8787`, so do it in the
 Surface's own browser. API: `GET /api/connections` reports connected or not and
 never returns a secret.
 
+## Look of the cards
+
+The calendar and to-do cards are drawn in the look of Google Calendar and
+Todoist (white cards, Google's blue date badge and event colours, Todoist's red
+header and P1-P4 checkboxes) so they're recognisable at a glance. Neither
+service offers an embed that works on a signed-in kiosk, so they're native cards
+fed by the same data, with no logos.
+
 ## Adding an integration
 
 Implement the matching protocol in `server/kitchen/providers/base.py` and swap

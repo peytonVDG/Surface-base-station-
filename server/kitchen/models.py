@@ -68,6 +68,7 @@ class Todo(BaseModel):
     due: datetime | None = None
     overdue: bool = False
     done: bool = False
+    priority: int = 4  # as shown in Todoist: 1 (urgent, red) to 4 (none)
 
 
 class Todos(BaseModel):
