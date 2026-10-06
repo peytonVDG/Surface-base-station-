@@ -1,3 +1,4 @@
+import { demoApi } from './demo';
 import type { Brief, Calendar, ClientConfig, DeepPartial, Settings, Todos, Weather } from './types';
 
 async function call<T>(method: string, path: string, body?: unknown): Promise<T> {
@@ -10,7 +11,7 @@ async function call<T>(method: string, path: string, body?: unknown): Promise<T>
   return res.json() as Promise<T>;
 }
 
-export const api = {
+const serverApi = {
   config: () => call<ClientConfig>('GET', 'config'),
   weather: () => call<Weather>('GET', 'weather'),
   calendar: () => call<Calendar>('GET', 'calendar'),
@@ -21,6 +22,9 @@ export const api = {
   patchSettings: (patch: DeepPartial<Settings>) => call<Settings>('PATCH', 'settings', patch),
   backlight: (percent: number) => call<{ hardware: boolean }>('PUT', 'backlight', { percent }),
 };
+
+// The demo build (npm run build:demo) runs with no backend, on sample data.
+export const api: typeof serverApi = import.meta.env.VITE_DEMO ? demoApi : serverApi;
 
 /** Calls `load` now and every `minutes`, keeping the last good value if a call fails. */
 export function poll<T>(load: () => Promise<T>, minutes: number, onData: (value: T) => void): () => void {

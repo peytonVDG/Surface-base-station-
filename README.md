@@ -51,6 +51,12 @@ For the device, `npm run build` once and the backend serves `web/dist` itself,
 so only the backend runs. `deploy/kitchen-display.service` starts it at login
 and `deploy/kiosk.sh` opens Chromium fullscreen.
 
+### Demo build (no backend)
+
+`npm run build:demo` writes `web/dist-demo/demo.html`, one self-contained page
+on sample data with the sky set for Middleville. It runs anywhere, including a
+phone browser; turn the phone sideways.
+
 Without a location the weather is sample data and the sky guesses your
 longitude from the time zone.
 
