@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 from kitchen.app import Providers, create_app
 from kitchen.config import Config, load_config
 from kitchen.display import Backlight
-from kitchen.providers.samples import ConfiguredBrief, SampleCalendar, SampleTodos
+from kitchen.providers.samples import ConfiguredBrief, SampleCalendar, SampleTodos  # noqa
 from kitchen.providers.weather import OpenMeteoWeather, SampleWeather, condition_for
 from kitchen.settings import SettingsStore
 
