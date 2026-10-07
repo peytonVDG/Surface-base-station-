@@ -1,11 +1,11 @@
 # Publishes the phone/browser version (web app on sample data with live
-# Middleville weather) to GitHub Pages on every push.
+# Middleville weather) to GitHub Pages on every push to main.
 # One-time setup: Settings > Pages > Source: "GitHub Actions".
 name: Phone preview
 
 on:
   push:
-    branches: [main, claude/project-thread-g8jfqh]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
