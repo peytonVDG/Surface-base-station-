@@ -5,6 +5,7 @@
   natively from the same data.) No Google logos are used.
 -->
 <script lang="ts">
+  import { todaysEvents } from '../lib/calendar';
   import { sameDay, timeOfDay } from '../lib/format';
   import type { Calendar } from '../lib/types';
 
@@ -12,7 +13,7 @@
 
   const tomorrowDate = $derived(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1));
   const events = $derived(calendar?.events ?? []);
-  const today = $derived(events.filter((e) => sameDay(new Date(e.start), now) || (e.all_day && new Date(e.start) <= now && now < new Date(e.end))));
+  const today = $derived(todaysEvents(events, now));
   const tomorrow = $derived(events.filter((e) => sameDay(new Date(e.start), tomorrowDate)));
   const focusId = $derived(
     (today.find((e) => !e.all_day && new Date(e.start) <= now && now < new Date(e.end)) ??
@@ -35,7 +36,7 @@
   </header>
   {#if today.length}
     <ul>
-      {#each today.slice(0, 5) as e (e.id)}
+      {#each today as e (e.id)}
         <li class:past={!e.all_day && new Date(e.end) <= now}>
           <span class="chip" class:focus={e.id === focusId} style:--c={e.color}>
             <b>{e.title}</b>
