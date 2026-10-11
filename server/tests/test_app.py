@@ -145,6 +145,74 @@ def test_recipes_listing_photos_and_cooked(tmp_path):
         assert c.post("/api/recipes/cooked", params={"id": "Nope"}).status_code == 404
 
 
+def _recipe_client(tmp_path, folder):
+    cfg = Config(data_dir=tmp_path / "data", web_dist=tmp_path / "nope", recipes_dir=folder)
+    app = create_app(cfg, Providers(SampleWeather(), SampleCalendar(), SampleTodos(), ConfiguredBrief("")),
+                     SettingsStore(tmp_path / "settings.json"), Backlight())
+    return TestClient(app)
+
+
+def test_edit_create_and_delete_recipes(tmp_path):
+    folder = tmp_path / "Recipes"
+    folder.mkdir()
+    (folder / "Pie.md").write_text("# Pie\n", encoding="utf-8")
+    with _recipe_client(tmp_path, folder) as c:
+        saved = c.put("/api/recipes", params={"id": "Pie"}, json={"markdown": "---\ntitle: Apple Pie\n---\n"})
+        assert saved.status_code == 200
+        assert (folder / "Pie.md").read_text() == "---\ntitle: Apple Pie\n---\n"
+        assert not list(folder.glob(".*.tmp"))
+        assert c.put("/api/recipes", params={"id": "../../x"}, json={"markdown": "x"}).status_code == 404
+
+        made = c.post("/api/recipes", json={"title": 'Mom\'s: "best" soup/stew'}).json()
+        assert (folder / "Mom's best soup stew.md").is_file() and "title: " in made["markdown"]
+        again = c.post("/api/recipes", json={"title": "Pie"}).json()
+        assert again["id"] == "Pie 2"
+        assert c.post("/api/recipes", json={"title": "  "}).status_code == 400
+
+        left = c.delete("/api/recipes", params={"id": "Pie 2"}).json()
+        assert "Pie 2" not in [r["id"] for r in left["items"]]
+        assert (folder / ".trash" / "Pie 2.md").is_file()
+
+
+def test_extra_recipe_folders(tmp_path):
+    main, other = tmp_path / "Recipes", tmp_path / "Grandma"
+    main.mkdir()
+    other.mkdir()
+    (main / "Pie.md").write_text("# Pie\n")
+    (other / "Pie.md").write_text("# Grandma pie\n")
+    with _recipe_client(tmp_path, main) as c:
+        assert c.post("/api/recipes/folders", json={"path": str(tmp_path / "nope")}).status_code == 400
+        assert c.post("/api/recipes/folders", json={"path": "relative/dir"}).status_code == 400
+        assert c.post("/api/recipes/folders", json={"path": str(main)}).status_code == 400  # already there
+        out = c.post("/api/recipes/folders", json={"path": str(other)}).json()
+        assert [f["label"] for f in out["folders"]] == ["Recipes", "Grandma"]
+        assert [f["count"] for f in out["folders"]] == [1, 1]
+        assert out["folders"][0]["primary"] and not out["folders"][0]["removable"]
+        ids = {r["id"]: r for r in c.get("/api/recipes").json()["items"]}
+        assert set(ids) == {"Pie", "Grandma::Pie"}
+        assert c.put("/api/recipes", params={"id": "Grandma::Pie"}, json={"markdown": "new"}).status_code == 200
+        assert (other / "Pie.md").read_text() == "new" and (main / "Pie.md").read_text() == "# Pie\n"
+        made = c.post("/api/recipes", json={"title": "Fudge", "folder": "Grandma"}).json()
+        assert made["id"] == "Grandma::Fudge" and (other / "Fudge.md").is_file()
+        assert c.delete("/api/recipes/folders", params={"path": str(main)}).status_code == 404  # config folder stays
+        out = c.delete("/api/recipes/folders", params={"path": str(other.resolve())}).json()
+        assert [f["label"] for f in out["folders"]] == ["Recipes"]
+        assert (other / "Pie.md").exists()  # removing a folder never deletes files
+        made = c.post("/api/recipes/folders", json={"path": str(tmp_path / "New"), "create": True}).json()
+        assert (tmp_path / "New").is_dir() and len(made["folders"]) == 2
+
+
+def test_sample_cookbook_is_read_only_and_folder_browser(client, tmp_path):
+    assert client.put("/api/recipes", params={"id": "apple-pie"}, json={"markdown": "x"}).status_code == 400
+    assert client.post("/api/recipes", json={"title": "Soup"}).status_code == 400
+    (tmp_path / "a").mkdir()
+    (tmp_path / ".hidden").mkdir()
+    (tmp_path / "f.txt").write_text("x")
+    out = client.get("/api/folders", params={"path": str(tmp_path)}).json()
+    assert out["dirs"] == ["a"] and out["parent"] == str(tmp_path.parent)
+    assert client.get("/api/folders", params={"path": str(tmp_path / "zzz")}).status_code == 404
+
+
 def test_sample_cookbook_is_served_by_default(client):
     out = client.get("/api/recipes").json()
     assert out["status"] == "sample"

@@ -7,7 +7,7 @@
   import Icon from './Icon.svelte';
   import Stars from './Stars.svelte';
 
-  let { recipe, onback, onclose }: { recipe: Recipe; onback: () => void; onclose: () => void } = $props();
+  let { recipe, onback, onedit, onclose }: { recipe: Recipe; onback: () => void; onedit: () => void; onclose: () => void } = $props();
 
   let step = $state(0);
   // svelte-ignore state_referenced_locally (cook mode is remounted for each recipe)
@@ -50,7 +50,10 @@
 
 <section class="cook" class:has-timers={timers.list.some((t) => !t.ringing)} aria-label="Cooking {recipe.title}">
   <aside>
-    <button type="button" class="pill" onclick={onback}><Icon name="back" /> Cookbook</button>
+    <div class="bar2">
+      <button type="button" class="pill" onclick={onback}><Icon name="back" /> Cookbook</button>
+      {#if recipe.editable}<button type="button" class="pill" onclick={onedit}><Icon name="edit" /> Edit</button>{/if}
+    </div>
     <div class="head">
       <h2>{recipe.title}</h2>
       <div class="meta">
@@ -138,6 +141,10 @@
     flex-direction: column;
     gap: 14px;
     min-height: 0;
+  }
+  .bar2 {
+    display: flex;
+    gap: 12px;
   }
   aside .pill,
   main .pill {

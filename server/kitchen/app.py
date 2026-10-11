@@ -13,6 +13,7 @@ import logging
 import re
 from dataclasses import dataclass
 from datetime import date
+from pathlib import Path
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
@@ -29,7 +30,7 @@ from .providers.google_calendar import GoogleCalendar
 from .providers.samples import ConfiguredBrief
 from .providers.todoist import TodoistTodos
 from .providers.weather import OpenMeteoWeather, SampleWeather
-from .recipes import RecipeStore, Recipes
+from .recipes import Folders, RecipeError, RecipeFile, RecipeStore, Recipes
 from .settings import Settings, SettingsStore
 
 log = logging.getLogger(__name__)
@@ -60,6 +61,26 @@ class ClientConfig(BaseModel):
     longitude: float | None
     location_name: str
     hardware_backlight: bool
+
+
+class RecipeBody(BaseModel):
+    markdown: str = Field(max_length=200_000)
+
+
+class NewRecipe(BaseModel):
+    title: str = Field(max_length=120)
+    folder: str | None = None
+
+
+class NewFolder(BaseModel):
+    path: str = Field(max_length=1000)
+    create: bool = False
+
+
+class FolderListing(BaseModel):
+    path: str
+    parent: str
+    dirs: list[str]
 
 
 class TodoUpdate(BaseModel):
@@ -188,14 +209,60 @@ def create_app(
     # --- Cookbook: Markdown notes in a folder; the web app does the parsing. ---
 
     recipes = RecipeStore(
-        config.recipes_dir or REPO_ROOT / "sample-recipes",
+        config.recipes_dir,
+        REPO_ROOT / "sample-recipes",
         config.data_dir / "cooked.json",
-        sample=config.recipes_dir is None,
+        config.data_dir / "recipe_folders.json",
     )
+
+    def recipe_job(job):
+        try:
+            return job()
+        except RecipeError as e:
+            raise HTTPException(400, str(e)) from None
+        except KeyError:
+            raise HTTPException(404, "No such recipe") from None
 
     @app.get("/api/recipes")
     async def list_recipes() -> Recipes:
         return recipes.list()
+
+    @app.put("/api/recipes")
+    async def save_recipe(id: str, body: RecipeBody) -> RecipeFile:
+        return recipe_job(lambda: recipes.save(id, body.markdown))
+
+    @app.post("/api/recipes")
+    async def create_recipe(body: NewRecipe) -> RecipeFile:
+        return recipe_job(lambda: recipes.create(body.title, body.folder))
+
+    @app.delete("/api/recipes")
+    async def delete_recipe(id: str) -> Recipes:
+        recipe_job(lambda: recipes.delete(id))
+        return recipes.list()
+
+    @app.get("/api/recipes/folders")
+    async def recipe_folders() -> Folders:
+        return recipes.folders()
+
+    @app.post("/api/recipes/folders")
+    async def add_recipe_folder(body: NewFolder) -> Folders:
+        return recipe_job(lambda: recipes.add_folder(body.path, body.create))
+
+    @app.delete("/api/recipes/folders")
+    async def remove_recipe_folder(path: str) -> Folders:
+        return recipe_job(lambda: recipes.remove_folder(path))
+
+    @app.get("/api/folders")
+    async def browse_folders(path: str = "") -> FolderListing:
+        """Sub-folders of a folder, for the picker. The backend only listens on this computer."""
+        here = Path(path).expanduser() if path else Path.home()
+        if not here.is_dir():
+            raise HTTPException(404, "No such folder")
+        try:
+            names = sorted((d.name for d in here.iterdir() if d.is_dir() and not d.name.startswith(".")), key=str.lower)
+        except OSError:
+            names = []
+        return FolderListing(path=str(here.resolve()), parent=str(here.resolve().parent), dirs=names)
 
     @app.get("/api/recipes/photo")
     async def recipe_photo(id: str, ext: str = ""):  # ext only lets the page tell art from photos

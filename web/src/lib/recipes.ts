@@ -6,6 +6,8 @@ export interface RecipeFile {
   markdown: string;
   photo: string | null;
   cooked: string[];
+  folder?: string; // which recipe folder it lives in
+  editable?: boolean; // false for the built-in sample cookbook
 }
 
 export interface Ingredient {
@@ -27,6 +29,8 @@ export interface Step {
 
 export interface Recipe {
   id: string;
+  folder: string;
+  editable: boolean;
   title: string;
   servings: number;
   minutes: number | null;
@@ -153,6 +157,33 @@ function frontMatter(md: string): { meta: Record<string, string | string[]>; bod
   return { meta, body: md.slice(m[0].length) };
 }
 
+/**
+ * Sets (or, with an empty text, removes) one line of the note's front matter and leaves everything else
+ * alone, so edits made in the app never disturb what Obsidian wrote. Lists are written as [a, b].
+ */
+export function setFrontMatter(md: string, key: string, value: string | string[]): string {
+  const nl = md.includes('\r\n') ? '\r\n' : '\n';
+  const text = Array.isArray(value) ? '' : value.trim();
+  let line: string | null = null;
+  if (Array.isArray(value)) line = `${key}: [${value.join(', ')}]`;
+  else if (text) line = `${key}: ${/^[\s>|&*!%@`"'#{}[\],-]|: | #|:$/.test(text) ? JSON.stringify(text) : text}`;
+  const m = /^---\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/.exec(md);
+  if (!m) return line ? `---${nl}${line}${nl}---${nl}${md}` : md;
+  const kept: string[] = [];
+  let skipping = false;
+  for (const l of m[1].split(/\r?\n/)) {
+    if (new RegExp(`^${key}\\s*:`, 'i').test(l)) {
+      skipping = true;
+      continue;
+    }
+    if (skipping && /^\s+-\s/.test(l)) continue; // the old block list under this key
+    skipping = false;
+    kept.push(l);
+  }
+  if (line) kept.push(line);
+  return `---${nl}${kept.join(nl)}${nl}---${nl}${md.slice(m[0].length)}`;
+}
+
 /** Obsidian leftovers: [[Link|shown]] -> shown, ![[photo.jpg]] removed, **bold** and `code` flattened. */
 function clean(text: string): string {
   return text
@@ -211,6 +242,8 @@ export function parseRecipe(file: RecipeFile): Recipe {
 
   return {
     id: file.id,
+    folder: file.folder ?? '',
+    editable: file.editable ?? true,
     title: str('title') || h1 || file.id.split('/').pop()!.replace(/[-_]+/g, ' '),
     servings: servings > 0 ? servings : 4,
     minutes: parseMinutes(timeText),

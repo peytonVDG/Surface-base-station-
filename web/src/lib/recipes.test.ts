@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { allTags, filterRecipes, findTimers, formatQty, parseIngredient, parseMinutes, parseRecipe, scaleIngredient } from './recipes';
+import { allTags, filterRecipes, findTimers, formatQty, parseIngredient, parseMinutes, parseRecipe, scaleIngredient, setFrontMatter } from './recipes';
 
 const note = (markdown: string, id = 'Soup') => parseRecipe({ id, markdown, photo: null, cooked: [] });
 
@@ -96,5 +96,30 @@ describe('cookbook search', () => {
     expect(filterRecipes([a, b], { ...base, sort: 'rating' }).map((r) => r.id)).toEqual(['b', 'a']);
     expect(filterRecipes([a, b], { ...base, sort: 'time' }).map((r) => r.id)).toEqual(['b', 'a']);
     expect(allTags([a, b])).toEqual(['dessert', 'soup']);
+  });
+});
+
+describe('setFrontMatter', () => {
+  const md = '---\ntitle: Pie\nservings: 8\ntags:\n  - dessert\n  - pie\ncssclasses: wide\n---\n## Ingredients\n- 1 egg\n';
+  it('changes one line and leaves the rest of the note alone', () => {
+    const out = setFrontMatter(md, 'servings', '6');
+    expect(out).toBe(md.replace('servings: 8\n', '').replace('---\n## Ingredients', 'servings: 6\n---\n## Ingredients'));
+    expect(out).toContain('cssclasses: wide');
+    expect(note(out).servings).toBe(6);
+  });
+  it('replaces a block list of tags', () => {
+    const out = setFrontMatter(md, 'tags', ['dinner', 'soup']);
+    expect(out).toContain('tags: [dinner, soup]');
+    expect(out).not.toContain('- dessert');
+    expect(note(out).tags).toEqual(['dinner', 'soup']);
+  });
+  it('removes a line when emptied, and adds front matter when there is none', () => {
+    expect(setFrontMatter(md, 'servings', ' ')).not.toContain('servings');
+    const fresh = setFrontMatter('## Steps\n1. Stir\n', 'title', 'Soup: the best');
+    expect(fresh.startsWith('---\ntitle: "Soup: the best"\n---\n## Steps')).toBe(true);
+    expect(note(fresh).title).toBe('Soup: the best');
+  });
+  it('keeps Windows line endings', () => {
+    expect(setFrontMatter('---\r\ntitle: A\r\n---\r\nbody', 'time', '5 min')).toBe('---\r\ntitle: A\r\ntime: 5 min\r\n---\r\nbody');
   });
 });

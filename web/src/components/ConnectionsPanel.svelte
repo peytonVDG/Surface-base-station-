@@ -7,6 +7,7 @@
   import { onMount } from 'svelte';
   import { api } from '../lib/api';
   import type { Connections } from '../lib/types';
+  import RecipeFolders from './RecipeFolders.svelte';
 
   let { onclose }: { onclose: () => void } = $props();
 
@@ -112,6 +113,8 @@
     {/if}
   </div>
 
+  <RecipeFolders />
+
   {#if error}<p class="err" role="alert">{error}</p>{/if}
 </section>
 
@@ -127,7 +130,9 @@
     z-index: 21;
     left: 250px;
     right: 250px;
-    top: 90px;
+    top: 40px;
+    max-height: calc(100% - 80px);
+    overflow-y: auto;
     padding: 22px 28px 26px;
     display: flex;
     flex-direction: column;
