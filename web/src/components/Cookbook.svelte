@@ -1,9 +1,11 @@
 <!-- The cookbook: photo tiles with search, tag filters and sorting. A tap opens cook mode. -->
 <script lang="ts">
   import { allTags, filterRecipes, formatMinutes, parseRecipe, type CookbookSort, type Recipe } from '../lib/recipes';
-  import { app } from '../lib/store.svelte';
+  import { api } from '../lib/api';
+  import { app, createRecipe } from '../lib/store.svelte';
   import { timers } from '../lib/timers.svelte';
   import CookMode from './CookMode.svelte';
+  import RecipeEditor from './RecipeEditor.svelte';
   import Icon from './Icon.svelte';
   import Stars from './Stars.svelte';
 
@@ -13,6 +15,42 @@
   let tag: string | null = $state(null);
   let sort: CookbookSort = $state('name');
   let openId: string | null = $state(null);
+  let editId: string | null = $state(null);
+
+  // "New recipe": a name, and which folder when there is more than one.
+  let naming = $state(false);
+  let newTitle = $state('');
+  let newFolder = $state('');
+  let folderNames: string[] = $state([]);
+  let newError = $state('');
+  let creating = $state(false);
+
+  async function startNew() {
+    newTitle = newError = '';
+    naming = true;
+    try {
+      const f = await api.recipeFolders();
+      folderNames = f.sample ? [] : f.folders.filter((x) => x.exists).map((x) => x.label);
+      newFolder = folderNames[0] ?? '';
+    } catch {
+      folderNames = [];
+    }
+  }
+
+  async function makeNew() {
+    creating = true;
+    newError = '';
+    try {
+      const made = await createRecipe(newTitle, newFolder || undefined);
+      naming = false;
+      openId = made.id;
+      editId = made.id;
+    } catch (e) {
+      newError = e instanceof Error ? e.message : String(e);
+    } finally {
+      creating = false;
+    }
+  }
 
   const all: Recipe[] = $derived((app.recipes?.items ?? []).map(parseRecipe));
   const tags = $derived(allTags(all));
@@ -27,8 +65,10 @@
   ];
 </script>
 
-{#if opened}
-  <CookMode recipe={opened} onback={() => (openId = null)} onclose={onclose} />
+{#if editId}
+  <RecipeEditor id={editId} onclose={() => (editId = null)} ondeleted={() => ((editId = null), (openId = null))} />
+{:else if opened}
+  <CookMode recipe={opened} onback={() => (openId = null)} onedit={() => (editId = opened.id)} onclose={onclose} />
 {:else}
   <section class="book" class:has-timers={timers.list.some((t) => !t.ringing)} aria-label="Cookbook">
     <header>
@@ -37,8 +77,23 @@
         <Icon name="search" />
         <input type="search" placeholder="Search recipes or ingredients" bind:value={query} />
       </label>
+      <button type="button" class="pill" onclick={startNew}><Icon name="plus" /> New recipe</button>
       <button type="button" class="pill solid" onclick={onclose}><Icon name="close" /> Close</button>
     </header>
+
+    {#if naming}
+      <form class="new" onsubmit={(e) => (e.preventDefault(), newTitle.trim() && makeNew())}>
+        <input placeholder="Name of the new recipe" maxlength="120" bind:value={newTitle} />
+        {#if folderNames.length > 1}
+          <select bind:value={newFolder} aria-label="Folder">
+            {#each folderNames as n (n)}<option value={n}>{n}</option>{/each}
+          </select>
+        {/if}
+        <button type="submit" class="pill solid" disabled={creating || !newTitle.trim()}>Create</button>
+        <button type="button" class="pill" onclick={() => (naming = false)}>Cancel</button>
+        {#if newError}<span class="err" role="alert">{newError}</span>{/if}
+      </form>
+    {/if}
 
     <div class="filters">
       <button type="button" class="chip" class:on={tag === null} onclick={() => (tag = null)}>All</button>
@@ -54,7 +109,7 @@
     {#if !app.recipes}
       <p class="empty">Loading recipes...</p>
     {:else if all.length === 0}
-      <p class="empty">No recipes yet. Add Markdown notes to the Recipes folder and they show up here.</p>
+      <p class="empty">No recipes yet. Tap New recipe, or add a folder of Markdown notes in Settings > Connections.</p>
     {:else if shown.length === 0}
       <p class="empty">Nothing matches that. Try fewer words, or tap All.</p>
     {:else}
@@ -75,7 +130,7 @@
         {/each}
       </div>
     {/if}
-    {#if app.recipes?.status === 'sample'}<p class="foot">Sample recipes. Your own show up once the Recipes folder is connected.</p>{/if}
+    {#if app.recipes?.status === 'sample'}<p class="foot">Sample recipes. To use your own, add your recipes folder in Settings > Connections.</p>{/if}
   </section>
 {/if}
 
@@ -136,6 +191,34 @@
   .pill {
     font-size: 20px;
     padding: 10px 20px;
+  }
+  .new {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--paper);
+    border: 3px solid var(--border);
+    border-radius: 14px;
+    padding: 10px 14px;
+  }
+  .new input,
+  .new select {
+    font: inherit;
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--paper2);
+    border: 3px solid var(--border);
+    border-radius: 12px;
+    padding: 8px 12px;
+  }
+  .new input {
+    flex: 1;
+  }
+  .err {
+    color: var(--red);
+    font-weight: 800;
+    font-size: 17px;
   }
   .filters {
     display: flex;

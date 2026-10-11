@@ -4,7 +4,7 @@
 import { api, poll } from './api';
 import { DEFAULT_SETTINGS } from './defaults';
 import { checkTimers } from './timers.svelte';
-import type { Brief, Recipes, Calendar, ClientConfig, DeepPartial, Settings, Todos, Weather } from './types';
+import type { Brief, RecipeFile, Recipes, Calendar, ClientConfig, DeepPartial, Settings, Todos, Weather } from './types';
 
 // Dev/testing overrides: ?at=2026-10-06T05:20 runs the clock from that moment,
 // ?wx=rain forces the weather (clear, partly, cloudy, fog, rain, storm, snow).
@@ -62,6 +62,24 @@ export async function markCooked(id: string): Promise<void> {
   const dates = await api.markCooked(id);
   const r = app.recipes;
   if (r) app.recipes = { ...r, items: r.items.map((x) => (x.id === id ? { ...x, cooked: dates } : x)) };
+}
+
+/** Writes a recipe's Markdown back to its note (and the shown cookbook follows at once). */
+export async function saveRecipe(id: string, markdown: string): Promise<void> {
+  const saved = await api.saveRecipe(id, markdown);
+  const r = app.recipes;
+  if (r) app.recipes = { ...r, items: r.items.map((x) => (x.id === id ? { ...x, markdown: saved.markdown } : x)) };
+}
+
+export async function createRecipe(title: string, folder?: string): Promise<RecipeFile> {
+  const made = await api.createRecipe(title, folder);
+  const r = app.recipes;
+  if (r) app.recipes = { ...r, items: [...r.items, made] };
+  return made;
+}
+
+export async function deleteRecipe(id: string): Promise<void> {
+  app.recipes = await api.deleteRecipe(id);
 }
 
 /** Start the clock and data polling. Returns a cleanup function. */

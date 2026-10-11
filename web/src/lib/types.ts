@@ -57,7 +57,36 @@ export interface Brief {
 
 export interface Recipes {
   status: Status;
-  items: { id: string; markdown: string; photo: string | null; cooked: string[] }[];
+  items: RecipeFile[];
+}
+
+export interface RecipeFile {
+  id: string;
+  markdown: string;
+  photo: string | null;
+  cooked: string[];
+  folder: string;
+  editable: boolean;
+}
+
+export interface RecipeFolder {
+  label: string;
+  path: string;
+  primary: boolean; // set in config.toml: can't be removed from the app
+  removable: boolean;
+  exists: boolean;
+  count: number;
+}
+
+export interface RecipeFolders {
+  sample: boolean;
+  folders: RecipeFolder[];
+}
+
+export interface FolderListing {
+  path: string;
+  parent: string;
+  dirs: string[];
 }
 
 export interface ClientConfig {

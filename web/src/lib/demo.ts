@@ -5,7 +5,7 @@
 // from Open-Meteo, which allows calls from any web page and needs no key.
 
 import { DEFAULT_SETTINGS } from './defaults';
-import type { Brief, Recipes, Calendar, ClientConfig, Connections, Condition, DeepPartial, Settings, Todos, Weather } from './types';
+import type { Brief, FolderListing, RecipeFile, RecipeFolders, Recipes, Calendar, ClientConfig, Connections, Condition, DeepPartial, Settings, Todos, Weather } from './types';
 
 const MIDDLEVILLE = { latitude: 42.71, longitude: -85.46, location_name: 'Middleville' };
 
@@ -167,15 +167,37 @@ function demoCooked(): Record<string, string[]> {
     return {};
   }
 }
+// Edits, new recipes and deletions made in the preview are kept in this browser only.
+const EDITS_KEY = 'kitchen.demo.recipes';
+type DemoEdits = { notes: Record<string, string>; removed: string[] };
+function demoEdits(): DemoEdits {
+  try {
+    return { notes: {}, removed: [], ...JSON.parse(localStorage.getItem(EDITS_KEY) ?? '{}') };
+  } catch {
+    return { notes: {}, removed: [] };
+  }
+}
+function saveEdits(e: DemoEdits) {
+  try {
+    localStorage.setItem(EDITS_KEY, JSON.stringify(e));
+  } catch {
+    /* fine: edits just won't survive a reload */
+  }
+}
 function recipes(): Recipes {
   const cooked = demoCooked();
-  const items = Object.entries(noteFiles).map(([path, markdown]) => {
+  const edits = demoEdits();
+  const photoOf = (id: string) => Object.entries(photoFiles).find(([p]) => p.split('/').pop()!.replace(/\.[^.]+$/, '') === id)?.[1] ?? null;
+  const items: RecipeFile[] = Object.entries(noteFiles).map(([path, markdown]) => {
     const id = path.split('/').pop()!.replace(/\.md$/, '');
-    const photo = Object.entries(photoFiles).find(([p]) => p.split('/').pop()!.replace(/\.[^.]+$/, '') === id)?.[1] ?? null;
-    return { id, markdown, photo, cooked: cooked[id] ?? [] };
+    return { id, markdown: edits.notes[id] ?? markdown, photo: photoOf(id), cooked: cooked[id] ?? [], folder: 'Sample recipes', editable: true };
   });
-  return { status: 'sample', items };
+  for (const [id, markdown] of Object.entries(edits.notes)) {
+    if (!items.some((i) => i.id === id)) items.push({ id, markdown, photo: null, cooked: cooked[id] ?? [], folder: 'Sample recipes', editable: true });
+  }
+  return { status: 'sample', items: items.filter((i) => !edits.removed.includes(i.id)) };
 }
+const noFolders = () => Promise.reject(new Error('Recipe folders only work on the display itself'));
 
 const ok = <T>(v: T) => Promise.resolve(structuredClone(v));
 
@@ -200,6 +222,35 @@ export const demoApi = {
     }
     return ok(all[id]);
   },
+  saveRecipe: (id: string, markdown: string) => {
+    const edits = demoEdits();
+    edits.notes[id] = markdown;
+    saveEdits(edits);
+    return ok(recipes().items.find((i) => i.id === id)!);
+  },
+  createRecipe: (title: string) => {
+    const name = title.replace(/[\\/:*?"<>|#^[\]]+/g, ' ').replace(/\s+/g, ' ').trim();
+    if (!name) return Promise.reject(new Error('Give the recipe a name.'));
+    const taken = new Set(recipes().items.map((i) => i.id));
+    let id = name;
+    for (let n = 2; taken.has(id); n++) id = `${name} ${n}`;
+    const edits = demoEdits();
+    edits.notes[id] = `---\ntitle: ${title.trim()}\nservings: 4\ntime: 30 min\ntags: []\n---\n## Ingredients\n- \n\n## Steps\n1. \n\n## Notes\n`;
+    edits.removed = edits.removed.filter((x) => x !== id);
+    saveEdits(edits);
+    return ok(recipes().items.find((i) => i.id === id)!);
+  },
+  deleteRecipe: (id: string) => {
+    const edits = demoEdits();
+    delete edits.notes[id];
+    edits.removed = [...new Set([...edits.removed, id])];
+    saveEdits(edits);
+    return ok(recipes());
+  },
+  recipeFolders: () => ok<RecipeFolders>({ sample: true, folders: [{ label: 'Sample recipes', path: 'sample-recipes', primary: true, removable: false, exists: true, count: recipes().items.length }] }),
+  addRecipeFolder: noFolders,
+  removeRecipeFolder: noFolders,
+  browseFolders: () => ok<FolderListing>({ path: '/', parent: '/', dirs: [] }),
   brief: () => ok<Brief>({ status: 'sample', url: '', updated_at: null }),
   // The public builds never hold anyone's accounts: sign-in only exists on the device.
   connections: () =>

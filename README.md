@@ -56,6 +56,14 @@ tags: [soup, chicken]
 1. Simmer for 20 minutes.
 ```
 
+**Folders:** Settings > Connections > Recipe folders adds more folders (browse the display's
+folders or type a path). They're remembered in the data folder; removing one never deletes files.
+**Editing:** open a recipe and tap **Edit** (or **New recipe** in the cookbook) to change the
+note's text, with quick fields for name, servings, time, rating and tags. Saving writes the
+`.md` file itself, so Obsidian sees the change. Deleting moves the note to `.trash` in its folder.
+The sample cookbook is read-only. If rclone only copies Drive down to the Surface, the next sync
+can overwrite edits made here: use `rclone bisync` (or sync the other way) to keep both sides.
+
 Pictures live next to the note or in `Recipes/photos/`, named like the note
 (`Tortilla Soup.jpg`). Obsidian `[[links]]` and `![[embeds]]` are tolerated.
 

@@ -1,5 +1,5 @@
 import { demoApi } from './demo';
-import type { Brief, Recipes, Calendar, ClientConfig, Connections, DeepPartial, Settings, Todos, Weather } from './types';
+import type { Brief, FolderListing, RecipeFile, RecipeFolders, Recipes, Calendar, ClientConfig, Connections, DeepPartial, Settings, Todos, Weather } from './types';
 
 async function call<T>(method: string, path: string, body?: unknown): Promise<T> {
   const res = await fetch(`/api/${path}`, {
@@ -7,7 +7,11 @@ async function call<T>(method: string, path: string, body?: unknown): Promise<T>
     headers: body === undefined ? undefined : { 'Content-Type': 'application/json' },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
-  if (!res.ok) throw new Error(`${method} /api/${path}: ${res.status}`);
+  if (!res.ok) {
+    // The backend explains what went wrong in plain words (a 400): show those.
+    const detail = res.status === 400 ? await res.json().then((j) => j.detail, () => null) : null;
+    throw new Error(typeof detail === 'string' ? detail : `${method} /api/${path}: ${res.status}`);
+  }
   return res.json() as Promise<T>;
 }
 
@@ -20,6 +24,13 @@ const serverApi = {
   brief: () => call<Brief>('GET', 'brief'),
   recipes: () => call<Recipes>('GET', 'recipes'),
   markCooked: (id: string) => call<string[]>('POST', `recipes/cooked?id=${encodeURIComponent(id)}`),
+  saveRecipe: (id: string, markdown: string) => call<RecipeFile>('PUT', `recipes?id=${encodeURIComponent(id)}`, { markdown }),
+  createRecipe: (title: string, folder?: string) => call<RecipeFile>('POST', 'recipes', { title, folder }),
+  deleteRecipe: (id: string) => call<Recipes>('DELETE', `recipes?id=${encodeURIComponent(id)}`),
+  recipeFolders: () => call<RecipeFolders>('GET', 'recipes/folders'),
+  addRecipeFolder: (path: string, create = false) => call<RecipeFolders>('POST', 'recipes/folders', { path, create }),
+  removeRecipeFolder: (path: string) => call<RecipeFolders>('DELETE', `recipes/folders?path=${encodeURIComponent(path)}`),
+  browseFolders: (path = '') => call<FolderListing>('GET', `folders?path=${encodeURIComponent(path)}`),
   connections: () => call<Connections>('GET', 'connections'),
   connectTodoist: (token: string) => call<Connections>('PUT', 'connections/todoist', { token }),
   disconnectTodoist: () => call<Connections>('DELETE', 'connections/todoist'),
